@@ -129,40 +129,42 @@ export default function Footer() {
       <div className="flex p-6 justify-between mx-32">
         <div className="p-4 flex gap-2">
           <div className="p-1 ">
-          <Link href="/">
-            <Image
-              src="/twitter.png"
-              alt="twitter"
-              width={24}
-              height={24}
-              className="object-contain"
-            />
-          </Link>
+            <Link href="/">
+              <Image
+                src="/twitter.png"
+                alt="twitter"
+                width={24}
+                height={24}
+                className="object-contain"
+              />
+            </Link>
           </div>
           <div className="p-1 ">
-          <Link href="/">
-            <Image
-              src="/instagram.png"
-              alt="instagram"
-              width={24}
-              height={24}
-              className="object-contain"
-            />
-          </Link>
+            <Link href="/">
+              <Image
+                src="/instagram.png"
+                alt="instagram"
+                width={24}
+                height={24}
+                className="object-contain"
+              />
+            </Link>
           </div>
           <div className="p-1 ">
-          <Link href="/">
-            <Image
-              src="/facebook.png"
-              alt="facebook"
-              width={24}
-              height={24}
-              className="object-contain"
-            />
-          </Link>
+            <Link href="/">
+              <Image
+                src="/facebook.png"
+                alt="facebook"
+                width={24}
+                height={24}
+                className="object-contain"
+              />
+            </Link>
           </div>
         </div>
-        <span className="text-grey-400 pt-6 text-lg">© 2020 Tripma incorporated</span>
+        <span className="text-grey-400 pt-6 text-lg">
+          © 2020 Tripma incorporated
+        </span>
       </div>
     </div>
   );
