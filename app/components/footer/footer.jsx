@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <div className=" py-16">
+    <div className="my-6">
       <div className="flex  items-start justify-around ">
         <div className="flex">
           <div className="p-3 mr-10 ">
@@ -126,8 +126,8 @@ export default function Footer() {
       </div>
       <div className="border-t-2 border-grey-200"></div>
 
-      <div className="flex p-6 justify-between mx-32">
-        <div className="p-4 flex gap-2">
+      <div className="flex justify-between mx-32 mt-4 ">
+        <div className=" flex gap-2">
           <div className="p-1 ">
             <Link href="/">
               <Image
@@ -162,7 +162,7 @@ export default function Footer() {
             </Link>
           </div>
         </div>
-        <span className="text-grey-400 pt-6 text-lg">
+        <span className="text-grey-400  text-lg">
           © 2020 Tripma incorporated
         </span>
       </div>

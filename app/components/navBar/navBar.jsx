@@ -6,7 +6,6 @@ export default function NavBar() {
   return (
     <div className="flex justify-between p-3 mx-6 my-4 bg-trueWhite">
       <div>
-        {/* <span className='text-body-xl font-bold text-purpleBlue'>Tripma</span> */}
         <Link href="/">
           <Image src="/logo.png" alt="Logo" width={100} height={54} />
         </Link>

@@ -13,8 +13,8 @@ export default function Hero() {
         <Image
           src="/heroTextGradient.png"
           alt="It's more than just a trip"
-          width={756}
-          height={265}
+          width={982}
+          height={344}
           className="object-contain"
         />
         <SearchBar />
