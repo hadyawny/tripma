@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <div className="my-6">
+    <div className="mb-6 mt-32">
       <div className="flex  items-start justify-around ">
         <div className="flex">
           <div className="p-3 mr-10 ">
