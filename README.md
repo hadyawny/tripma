@@ -6,17 +6,3 @@ You can view the ERD for this project [ERD](https://drive.google.com/file/d/1MV7
 ## API Documentation
 The API documentation for this project is available on Swagger [here](https://app.swaggerhub.com/apis/HADYAWNY5/Tripma/1.0.0).
 
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```

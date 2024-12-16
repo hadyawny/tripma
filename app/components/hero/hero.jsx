@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import DropDownmenu from "../dropDownMenu";
+import SearchBar from "./searchBar";
 
 export default function Hero() {
   return (
@@ -16,20 +17,7 @@ export default function Hero() {
           height={265}
           className="object-contain"
         />
-        {/* Search Bar */}
-        <div className="flex ">
-            {/* <div className="p-6 ">
-            <DropDownmenu title={"From where?"} />
-            </div>
-            <div className="p-6 ">
-            <DropDownmenu title={"Where to?"} />
-            </div> */}
-
-
-          <button className=" text-white px-4 py-3 rounded-lg bg-purpleBlue">
-            Search
-          </button>
-        </div>
+        <SearchBar />
       </div>
     </div>
   );
