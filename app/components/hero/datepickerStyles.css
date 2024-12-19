@@ -1,0 +1,68 @@
+
+/* Global Styles to override the Next Month Button */
+.react-datepicker__navigation.react-datepicker__navigation--next {
+    position: absolute; /* Change the positioning */
+    top: 110px;  /* Adjust vertical position */
+    right: -30px; /* Adjust horizontal position */
+  }
+  
+  .react-datepicker__navigation.react-datepicker__navigation--previous {
+    position: absolute; /* Change the positioning */
+    top: 110px;  
+    left: -30px; 
+  }
+  
+  .react-datepicker {
+    border: none !important;
+  }
+  
+  .react-datepicker__month-container,
+  .react-datepicker__header,
+  .react-datepicker__day {
+    border: none !important;
+  }
+  
+  
+  .react-datepicker__current-month {
+    text-align: left; 
+  }
+  
+  
+  .react-datepicker__header {
+    background: transparent !important; /* Remove background from the header */
+  }
+  
+  .react-datepicker__day-names {
+    background: transparent !important; /* Remove background from the weekday names */
+  }
+  
+  /* Styling the start date of the range */
+  
+  .react-datepicker__day--in-range {
+    background-color: transparent !important;  /* Just remove the background */
+    color: #000 !important;  /* Ensure the text color remains visible */
+  }
+  .react-datepicker__day--range-start {
+    background-color: #605DEC !important; /* Start date color */
+    color: white !important; /* Text color for the start date */
+    border-radius: 100% !important; /* Make the start date a circle */
+    font-weight: bold !important; /* Optional: make the start date bold */
+  }
+  .react-datepicker__day--selected {
+    background-color: #605DEC !important; /* Selected date background color */
+    color: white !important; /* Text color for the selected date */
+    border-radius: 100% !important; /* Make the selected date circular */
+    font-weight: bold !important; /* Optional: Make the text bold */
+  }
+  
+  
+  /* Styling the end date of the range */
+  .react-datepicker__day--range-end {
+    background-color: #605DEC !important; /* End date color */
+    color: white !important;
+    border-radius: 100% !important;
+    font-weight: bold !important; /* Optional: make the end date bold */
+  }
+  
+  
+  
