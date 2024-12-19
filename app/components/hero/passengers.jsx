@@ -12,7 +12,23 @@ export default function Passengers() {
 
   function onChangeAdults(value) {
     setAdults(value);
-    setTitle(`${value} Adults`);
+    if(minors!==0){
+      setTitle(`${value} Adults - ${minors} Minors`);
+    }
+    else {
+      setTitle(`${value} Adults `);
+    }
+  }
+
+  function onChangeMinors(value) {
+    setMinors(value);
+    setTitle(`${adults} Adults - ${value} Minors`);
+    if(value!==0){
+      setTitle(`${adults} Adults - ${value} Minors`);
+    }
+    else {
+      setTitle(`${adults} Adults `);
+    }
   }
 
   return (
@@ -30,7 +46,7 @@ export default function Passengers() {
       </PopoverButton>
       <PopoverPanel
         anchor="bottom"
-        className=" bg-trueWhite px-6 pt-6 pb-2   text-grey-400 border border-grey-200 shadow-lg rounded-md mt-4 fixed"
+        className=" bg-trueWhite px-6 pt-6 pb-2   text-grey-400 border border-grey-200 shadow-lg rounded-md mt-1 fixed"
       >
         <div className="flex justify-between items-center mb-4">
           <span className="mr-6">Adults:</span>
@@ -43,8 +59,8 @@ export default function Passengers() {
               <Image
                 src="/minus.png"
                 alt="minus icon"
-                width={18}
-                height={18}
+                width={24}
+                height={24}
                 className="object-contain "
               />
             </button>
@@ -66,7 +82,7 @@ export default function Passengers() {
           <span>Minors:</span>
           <div className="flex items-center ">
             <button
-              onClick={() => setMinors(minors - 1)}
+              onClick={() => onChangeMinors(minors - 1)}
               disabled={minors <= 0}
               className="mr-4"
 
@@ -74,13 +90,13 @@ export default function Passengers() {
               <Image
                 src="/minus.png"
                 alt="minus icon"
-                width={18}
-                height={18}
+                width={24}
+                height={24}
                 className="object-contain "
               />
             </button>
             <span className="">{minors}</span>
-            <button onClick={() => setMinors(minors + 1)} className="ml-4">
+            <button onClick={() => onChangeMinors(minors + 1)} className="ml-4">
               <Image
                 src="/plus.png"
                 alt="plus icon"
