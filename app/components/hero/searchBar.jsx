@@ -1,6 +1,8 @@
 import Form from "next/form";
 
 import DropDownMenu from "../dropDownMenu";
+import TripDatePicker from "./tripDatePicker";
+import Passengers from "./passengers";
 
 export default function SearchBar() {
   const options = [
@@ -12,7 +14,7 @@ export default function SearchBar() {
   ];
 
   return (
-    <div className="">
+    <div className=" text-grey-400">
       <Form className="flex">
         <DropDownMenu
           title={"From where?"}
@@ -24,6 +26,8 @@ export default function SearchBar() {
           icon={"/arrival.png"}
           data={options}
         />
+        <TripDatePicker/>
+        <Passengers/>
         <button
           type="submit"
           className=" text-white px-4 py-2 rounded-lg bg-purpleBlue"
@@ -34,3 +38,5 @@ export default function SearchBar() {
     </div>
   );
 }
+
+

@@ -5,7 +5,7 @@ import AuthModal from "../modal/authModal";
 
 export default function NavBar() {
   return (
-    <div className="flex justify-between p-3 mx-6 my-4 bg-trueWhite">
+    <div className="flex justify-between p-2 mx-6 my-2 bg-trueWhite">
       <div>
         <Link href="/">
           <Image src="/logo.png" alt="Logo" width={100} height={54} />
