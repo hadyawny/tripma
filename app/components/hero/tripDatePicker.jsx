@@ -5,38 +5,56 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/app/components/hero/datepickerStyles.css";
-export default function TripDatePicker() {
+export default function TripDatePicker({onDateChange}) {
   const [isRoundTrip, setIsRoundTrip] = useState(true);
-  const [dateStart, setDateStart] = useState();
-  const [dateEnd, setDateEnd] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [title, setTitle] = useState("Depart - Arrive");
 
   function onChangeHandler(value) {
-    setDateStart(value[0]);
-    setDateEnd(value[1]);
-    if (value[0]) {
+    const newStartDate = value[0];
+    const newEndDate = value[1];
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+
+    if (newStartDate && newEndDate) {
       setTitle(
-        `${value[0].toLocaleDateString("en-US", {
+        `${newStartDate.toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
-        })} - `
-      );
-    }
-    if (value[0] && value[1]) {
-      setTitle(
-        `${value[0].toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        })} - ${value[1].toLocaleDateString("en-US", {
+        })} - ${newEndDate.toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
         })}`
       );
-    }
-
-    if (!value) {
+    } else if (newStartDate) {
+      setTitle(
+        `${newStartDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        })} - `
+      );
+    } else {
       setTitle("Depart - Arrive");
     }
+
+    onDateChange({ startDate: newStartDate, endDate: newEndDate, isRoundTrip });
+  }
+
+  function onTripTypeChange(roundTrip) {
+    setIsRoundTrip(roundTrip);
+    if (!roundTrip) {
+      setEndDate(null);
+      setTitle(
+        startDate
+          ? `${startDate.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}`
+          : "Select Date"
+      );
+    }
+    onDateChange({ startDate, endDate: null, isRoundTrip: roundTrip });
   }
 
   return (
@@ -55,7 +73,7 @@ export default function TripDatePicker() {
       <PopoverPanel
         anchor={""}
         className="flex flex-col items-center bg-trueWhite  pt-4 pb-2  border border-grey-200 shadow-lg rounded-md absolute  z-10  "
-        style={{ width:"600px", top: "-50%",left: "-90%",   }} 
+        style={{ width: "600px", top: "-50%", left: "-90%" }}
       >
         <div className="mb-4 flex justify-between items-center mx-2">
           <div className="m">
@@ -63,7 +81,7 @@ export default function TripDatePicker() {
               type="radio"
               name="round"
               id="round"
-              onChange={() => setIsRoundTrip(true)}
+              onChange={() => onTripTypeChange(true)}
               checked={isRoundTrip}
               className="mr-2 "
             />
@@ -75,7 +93,7 @@ export default function TripDatePicker() {
               name="round"
               id="oneWay"
               checked={!isRoundTrip}
-              onChange={() => setIsRoundTrip(false)}
+              onChange={() => onTripTypeChange(false)}
               className="mr-2"
             />
             <label htmlFor="oneWay" className="mr-2">
@@ -97,24 +115,27 @@ export default function TripDatePicker() {
             Done
           </PopoverButton>
         </div>
-        
+
         <DatePicker
           placeholderText={isRoundTrip ? "Depart - Arrive" : "Select Date"}
           selectsRange={isRoundTrip}
-          startDate={dateStart}
-          selected={isRoundTrip ? null : dateStart}
-          endDate={isRoundTrip ? dateEnd : null}
+          startDate={startDate}
+          selected={isRoundTrip ? null : startDate}
+          endDate={isRoundTrip ? endDate : null}
           onChange={
             isRoundTrip
               ? onChangeHandler
               : (date) => {
-                  setDateStart(date);
+                  setStartDate(date);
+                  setEndDate(null)
                   setTitle(
                     `${date.toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                     })}`
                   );
+                  onDateChange({ startDate: date, endDate: endDate, isRoundTrip });
+
                 }
           }
           dateFormat="dd MMM yyyy"
