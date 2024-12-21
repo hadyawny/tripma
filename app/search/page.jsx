@@ -1,27 +1,32 @@
-'use client'
-import { useSearchParams } from 'next/navigation'
-import React from 'react'
+"use client";
+import { useSearchParams } from "next/navigation";
+import React from "react";
+import FlightDealsSearch from "../components/flightDeals/flightDealsSearch";
+import SearchBar from "../components/hero/searchBar";
+import PlacesToStaySearch from "../components/placesToStay/placesToStaySearch";
 
-export default function SearchPage({params}) {
-
+export default function SearchPage({}) {
   const searchParams = useSearchParams();
-  const fromAirport = searchParams.get('from');
-  const toAirport = searchParams.get('to');
-  const depatDate = searchParams.get('startDate');
-  const arriveDate = searchParams.get('endDate') || null;
-  const adults = searchParams.get('adults')|| 1;
-  const minors = searchParams.get('minors')|| 0;
-
-
+  const fromAirport = searchParams.get("from");
+  const toAirport = searchParams.get("to");
+  const depatDate = searchParams.get("startDate");
+  const arriveDate = searchParams.get("endDate") || null;
+  const adults = searchParams.get("adults") || 1;
+  const minors = searchParams.get("minors") || 0;
+  const isRoundTrip = searchParams.get("isRoundTrip") === "true" ? true : false;
   return (
     <div>
-      <h1>Search Page</h1>
-      <p>From: {fromAirport}</p>
-      <p>To: {toAirport}</p>
-      <p>Departure Date: {depatDate}</p>
-      {arriveDate && <p>Arrival Date: {arriveDate}</p>}
-      <p>Adults: {adults}</p>
-      <p>Minors: {minors}</p>
+      <SearchBar
+        fromValue={fromAirport}
+        toValue={toAirport}
+        startDateValue={depatDate}
+        endDateValue={arriveDate}
+        adultsValue={adults}
+        minorsValue={minors}
+        isRoundTripValue={isRoundTrip}
+      />
+      <PlacesToStaySearch city={toAirport} />
+      <FlightDealsSearch city={fromAirport} />
     </div>
-  )
+  );
 }

@@ -4,30 +4,30 @@ import Image from "next/image";
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function Passengers({onPassengersChange}) {
-  const [adults, setAdults] = useState(1);
-  const [minors, setMinors] = useState(0);
-  const [title, setTitle] = useState(`${adults} Adults`);
+export default function Passengers({adultsValue,minorsValue,onPassengersChange}) {
+  const [adults, setAdults] = useState(+adultsValue||1);
+  const [minors, setMinors] = useState(+minorsValue||0);
+  const [title, setTitle] = useState(minors ? `${adults} Adult - ${minors} Minor` : `${adults} adult`);
 
   function onChangeAdults(value) {
     setAdults(value);
     if (minors !== 0) {
-      setTitle(`${value} Adults - ${minors} Minors`);
+      setTitle(`${value} Adult - ${minors} Minor`);
       onPassengersChange({ adults: value, minors: minors });
     } else {
-      setTitle(`${value} Adults `);
+      setTitle(`${value} Adult `);
       onPassengersChange({ adults: value, minors: 0 });
     }
   }
 
   function onChangeMinors(value) {
     setMinors(value);
-    setTitle(`${adults} Adults - ${value} Minors`);
+    setTitle(`${adults} Adult - ${value} Minor`);
     if (value !== 0) {
-      setTitle(`${adults} Adults - ${value} Minors`);
+      setTitle(`${adults} Adult - ${value} Minor`);
       onPassengersChange({ adults: adults, minors: value });
     } else {
-      setTitle(`${adults} Adults `);
+      setTitle(`${adults} Adult `);
       onPassengersChange({ adults: adults, minors: 0 });
     }
   }
