@@ -6,15 +6,16 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/app/components/hero/datepickerStyles.css";
 export default function TripDatePicker({startDateValue,endDateValue,isRoundTripValue,onDateChange}) {
-  console.log(isRoundTripValue)
   const [isRoundTrip, setIsRoundTrip] = useState(isRoundTripValue || true);
   const [startDate, setStartDate] = useState(startDateValue|| null);
   const [endDate, setEndDate] = useState(endDateValue|| null);
   const [title, setTitle] = useState("Depart - Arrive");
-  console.log(isRoundTrip)
+  
   function onChangeHandler(value) {
     const newStartDate = value[0];
     const newEndDate = value[1];
+
+    
     setStartDate(newStartDate);
     setEndDate(newEndDate);
 
@@ -57,6 +58,14 @@ export default function TripDatePicker({startDateValue,endDateValue,isRoundTripV
     }
     onDateChange({ startDate, endDate: null, isRoundTrip: roundTrip });
   }
+
+  const formatDate = (date) => {
+    if (!date) return ;
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
 
   return (
     <Popover className="relative h-8 ">
@@ -116,6 +125,8 @@ export default function TripDatePicker({startDateValue,endDateValue,isRoundTripV
             Done
           </PopoverButton>
         </div>
+         {/* Divider */}
+  <hr className="w-full border-t border-grey-150 mt-px mb-4"  />
 
         <DatePicker
           placeholderText={isRoundTrip ? "Depart - Arrive" : "Select Date"}

@@ -6,7 +6,6 @@ export default function DropDownMenu({ title, icon, data ,onItemsChange}) {
   const [selectedTitle, setSelectedTitle] = useState(title);
 
 
-
   return (
     <Menu as="div" className="relative inline-block text-left">
       <MenuButton
@@ -30,14 +29,14 @@ export default function DropDownMenu({ title, icon, data ,onItemsChange}) {
             {() => (
               <p
                 onClick={() => {
-                  setSelectedTitle(item.value);
-                  onItemsChange({ item: item.value });
+                  setSelectedTitle(item.code);
+                  onItemsChange({ item: item.code });
                 }}
                 className={`block px-4 py-2 
                    "bg-blue-100" 
                  cursor-pointer`}
               >
-                {item.value}
+                {item.code}
               </p>
             )}
           </MenuItem>
