@@ -10,7 +10,7 @@ export default function DropDownMenu({ title, icon, data ,onItemsChange}) {
     <Menu as="div" className="relative inline-block text-left">
       <MenuButton
         as="div"
-        className="flex items-center justify-start border border-grey-200 py-2 pl-4 w-72 cursor-pointer"
+        className="flex items-center justify-start border border-grey-200 py-2 pl-4 w-64 cursor-pointer "
       >
         <Image
           src={icon}

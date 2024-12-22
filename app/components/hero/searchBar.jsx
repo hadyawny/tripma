@@ -97,7 +97,7 @@ export default function SearchBar({
           />
           <button
             type="submit"
-            className=" text-white px-4 py-2 rounded-lg bg-purpleBlue"
+            className=" text-white px-4 py-2 rounded-r-lg bg-purpleBlue "
           >
             Search
           </button>

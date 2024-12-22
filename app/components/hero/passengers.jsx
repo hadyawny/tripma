@@ -35,7 +35,7 @@ export default function Passengers({adultsValue,minorsValue,onPassengersChange})
 
   return (
     <Popover className="h-8 ">
-      <PopoverButton className="flex items-center justify-start border border-grey-200 py-2 pl-4 w-56  cursor-pointer ">
+      <PopoverButton className="flex items-center justify-start border border-grey-200 py-2 pl-4 w-60  cursor-pointer ">
         <Image
           src="/person.png"
           alt="person icon"

@@ -83,7 +83,7 @@ export default function TripDatePicker({startDateValue,endDateValue,isRoundTripV
       <PopoverPanel
         anchor={""}
         className="flex flex-col items-center bg-trueWhite  pt-4 pb-2  border border-grey-200 shadow-lg rounded-md absolute  z-10  "
-        style={{ width: "600px", top: "-50%", left: "-90%" }}
+        style={{ width: "600px", top: "-50%", left: "-100%" }}
       >
         <div className="mb-4 flex justify-between items-center mx-2">
           <div className="m">
@@ -125,7 +125,6 @@ export default function TripDatePicker({startDateValue,endDateValue,isRoundTripV
             Done
           </PopoverButton>
         </div>
-         {/* Divider */}
   <hr className="w-full border-t border-grey-150 mt-px mb-4"  />
 
         <DatePicker
