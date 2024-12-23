@@ -173,6 +173,7 @@ export default function SearchResults({
           <TotalPrice
             selectedDepartingFlight={selectedDepartingFlight}
             selectedReturningFlight={selectedReturningFlight}
+            isRoundTrip={isRoundTripValue}
           />
         )}
       </div>

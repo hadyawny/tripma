@@ -69,13 +69,3 @@ function calculateTripLength(fromTime, toTime) {
   return `${hours}h ${minutes}m`;
 }
 
-// id: 1;
-// airline: "Delta Airlines";
-// departDay: "23-12-2024";
-// from: "ATL";
-// to: "LAX";
-// fromTime: "08:00 AM";
-// toTime: "11:00 AM";
-// price: 250;
-// stopLength: null;
-// stops: "No stop";
