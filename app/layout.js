@@ -4,6 +4,7 @@ import NavBar from "./components/navBar/navBar";
 import Footer from "./components/footer/footer";
 import CookiesPopUp from "./components/cookiesPopUp";
 import HomeNotification from "./components/homeNotification";
+import { GlobalContextProvider } from "./context/store";
 
 
 export const metadata = {
@@ -16,11 +17,13 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
       >
+        <GlobalContextProvider>
         <HomeNotification/>
         <NavBar />
         {children}
         <CookiesPopUp/>
         <Footer/>
+        </GlobalContextProvider>
       </body>
     </html>
   );

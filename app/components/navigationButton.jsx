@@ -2,11 +2,13 @@
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-export default function NavigationButton({text,color,bgColor,borderColor,destination,data}) {
+export default function NavigationButton({text,color,bgColor,borderColor,destination,func}) {
     const router = useRouter();
 
     const handleClick = () => {
-        router.push(destination, { state: data });
+
+        router.push(destination);
+        func();
     }
 
   return (
