@@ -58,7 +58,6 @@ export default function SearchResults({
     }
   }, [formattedEndDate, toValue, fromValue]);
 
-  
   return (
     <div className="mx-16 my-10">
       <SearchBar
