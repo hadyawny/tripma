@@ -20,7 +20,7 @@ export default function SearchBar({
 
   const [from, setFrom] = useState(fromValue || null);
   const [to, setTo] = useState(toValue || null);
-  const [isRoundTrip, setIsRoundTrip] = useState(isRoundTripValue ? true : false);
+  const [isRoundTrip, setIsRoundTrip] = useState(isRoundTripValue === undefined ? true : isRoundTripValue);
   const [startDate, setStartDate] = useState(startDateValue || null);
   const [endDate, setEndDate] = useState(endDateValue || null);
   const [adults, setAdults] = useState(adultsValue || 1);
