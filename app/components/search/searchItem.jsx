@@ -1,16 +1,15 @@
 import Image from "next/image";
 import React from "react";
 
-export default function SearchItem({ flightInfo }) {
+export default function SearchItem({ flightInfo ,onClick ,isSelected}) {
   const tripLength = calculateTripLength(
     flightInfo.fromTime,
     flightInfo.toTime
   );
-  console.log(tripLength);
 
   return (
     <>
-    <div className="px-4 flex mb-4 text-grey-900">
+    <div className={`px-4 flex mb-4 text-grey-900 cursor-pointer rounded-lg ${isSelected ? 'border rounded-lg border-purpleBlue bg-purpleWhite' : ''}`} onClick={onClick}>
       <Image
         src={flightInfo.airlineLogo}
         alt="airline logo"

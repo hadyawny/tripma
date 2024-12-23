@@ -1,11 +1,12 @@
 import React from 'react'
+import PriceHistoryChart from './priceHistoryChart'
 
 export default function PriceStatistics() {
 
   return (
-    <div>
+    <div className='w-1/3'>
       <p className='text-h4 text-grey-600'>Price grid <span className='text-grey-400'>(flexible dates)</span></p>
-      <table className='table-auto border rounded-lg  border-grey-200  text-center  text-grey-700 text-sm mt-4'>
+      <table className='table-auto border rounded-lg  border-grey-200  text-center  text-grey-700 text-sm my-4'>
         <thead>
           <tr>
             <th className='border border-grey-200 px-6 py-3'> </th>
@@ -59,6 +60,21 @@ export default function PriceStatistics() {
           </tr>
         </tbody>
       </table>
+      <p className='text-h4 text-grey-600 mt-6'>Price History </p>
+
+      <PriceHistoryChart price1={800} price2={600} price3={700} price4={600} price5={780} price6={550} price7={500} price8={750} price9={500}/>
+
+      <div className='mt-6 '>
+      <div className='mb-4'>
+      <span className='text-h4 text-grey-600  '>Price Rating </span>
+      <span className='text-h5 text-trueWhite bg-turquoise px-2 py-0.5 rounded-lg ml-4'>Buy soon</span>
+      </div>
+      <p  className='text-grey-600 mb-2'>We recommend booking soon. The average cost of this flight is $750, but could rise 18% to $885 in two weeks.</p>
+      <p  className='text-grey-300'>Tripma analyzes thousands of flights, prices, and trends to ensure you get the best deal.</p>
+
+      </div>
+
+
     </div>
   )
 }

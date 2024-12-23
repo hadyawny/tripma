@@ -6,10 +6,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "@/app/components/hero/datepickerStyles.css";
 export default function TripDatePicker({startDateValue,endDateValue,isRoundTripValue,onDateChange}) {
-  const [isRoundTrip, setIsRoundTrip] = useState(isRoundTripValue || true);
+  const [isRoundTrip, setIsRoundTrip] = useState(isRoundTripValue ? true : false);
   const [startDate, setStartDate] = useState(startDateValue|| null);
   const [endDate, setEndDate] = useState(endDateValue|| null);
   const [title, setTitle] = useState("Depart - Arrive");
+  console.log(isRoundTrip);
   
   function onChangeHandler(value) {
     const newStartDate = value[0];

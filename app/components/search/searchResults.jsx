@@ -1,10 +1,12 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import SearchBar from "../hero/searchBar";
 import { flights } from "@/app/(data)/data";
 import SearchedFlights from "./searchedFlights";
 import TripMap from "./TripMap";
 import PriceStatistics from "./priceStatistics";
 import Image from "next/image";
+import TotalPrice from "./totalPrice";
 
 export default function SearchResults({
   fromValue,
@@ -15,19 +17,24 @@ export default function SearchResults({
   minorsValue,
   isRoundTripValue,
 }) {
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-  };
+  const [selectedDepartingFlight, setSelectedDepartingFlight] = useState(null);
+  const [selectedReturningFlight, setSelectedReturningFlight] = useState(null);
+  const [filteredReturningResults, setFilteredReturningResults] = useState([]);
 
-  // Format dates
+  async function onFlightSelect(item) {
+    if (!selectedDepartingFlight) {
+      setSelectedDepartingFlight(item);
+    } else if (selectedDepartingFlight && !isRoundTripValue) {
+      setSelectedDepartingFlight(item);
+    } else if (selectedDepartingFlight && isRoundTripValue) {
+      setSelectedReturningFlight(item);
+    }
+  }
+
   const formattedStartDate = startDateValue ? formatDate(startDateValue) : null;
+  const formattedEndDate = endDateValue ? formatDate(endDateValue) : null;
 
-  // Filter flights
-  const filteredResults = flights.filter((flight) => {
+  const filteredDepatingResults = flights.filter((flight) => {
     const isFromMatch = flight.from === fromValue;
     const isToMatch = flight.to === toValue;
     const isStartDateMatch =
@@ -36,6 +43,22 @@ export default function SearchResults({
     return isFromMatch && isToMatch && isStartDateMatch;
   });
 
+  useEffect(() => {
+    if (formattedEndDate) {
+      const results = flights.filter((flight) => {
+        const isFromMatch = flight.from === toValue;
+        const isToMatch = flight.to === fromValue;
+        const isStartDateMatch =
+          formattedEndDate && flight.departDay == formattedEndDate;
+
+        return isFromMatch && isToMatch && isStartDateMatch;
+      });
+
+      setFilteredReturningResults(results);
+    }
+  }, [formattedEndDate, toValue, fromValue]);
+
+  
   return (
     <div className="mx-16 my-10">
       <SearchBar
@@ -109,24 +132,58 @@ export default function SearchResults({
           />
         </button>
       </div>
-      
+
       <div className="mt-12 flex ">
-        <div className="w-3/5 mr-20">
+        <div className="w-3.9/5  mr-20">
           <p className="text-h4 text-grey-600">
-            Choose a <span className="text-purpleBlue">departing</span> flight
+            Choose a{" "}
+            <span className="text-purpleBlue">
+              {selectedDepartingFlight && isRoundTripValue
+                ? "returning"
+                : "departing"}
+            </span>{" "}
+            flight
           </p>
-          <SearchedFlights searchResults={filteredResults} />
+          <SearchedFlights
+            searchResults={
+              selectedDepartingFlight && isRoundTripValue
+                ? filteredReturningResults
+                : filteredDepatingResults
+            }
+            onFlightSelect={onFlightSelect}
+          />
           <div className="flex  mt-6 justify-end">
             <button className="text-lg text-purpleBlue px-5 py-3 border rounded-lg border-purpleBlue">
               Show all flights
             </button>
           </div>
 
-          <TripMap fromCity={fromValue} toCity={toValue} />
+          <TripMap
+            fromCity={
+              selectedDepartingFlight && isRoundTripValue ? toValue : fromValue
+            }
+            toCity={
+              selectedDepartingFlight && isRoundTripValue ? fromValue : toValue
+            }
+          />
         </div>
 
-        <PriceStatistics />
+        {!selectedDepartingFlight && <PriceStatistics />}
+        {selectedDepartingFlight && (
+          <TotalPrice
+            selectedDepartingFlight={selectedDepartingFlight}
+            selectedReturningFlight={selectedReturningFlight}
+          />
+        )}
       </div>
     </div>
   );
 }
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
