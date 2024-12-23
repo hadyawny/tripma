@@ -11,7 +11,6 @@ export default function TripDatePicker({
   isRoundTripValue,
   onDateChange,
 }) {
-  console.log({ startDateValue, endDateValue, isRoundTripValue, onDateChange });
 
   const [isRoundTrip, setIsRoundTrip] = useState(
     isRoundTripValue === undefined ? true : isRoundTripValue
