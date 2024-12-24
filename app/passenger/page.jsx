@@ -9,8 +9,8 @@ export default function PassengerPage() {
   const {
     selectedDepartingFlight,
     selectedReturningFlight,
-    setpassengerInfo,
-    passengerInfo,
+    setPassengerInfo,
+    
   } = useGlobalContext();
 
   const [formData, setFormData] = useState({
@@ -57,7 +57,7 @@ export default function PassengerPage() {
   }, [formData]);
 
   function savePassengerData() {
-    setpassengerInfo({
+    setPassengerInfo({
       ...formData,
       bags: bags,
       ...additionalFormData,

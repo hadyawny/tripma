@@ -2,6 +2,7 @@
 import React from "react";
 import { useGlobalContext } from "../context/store";
 import Image from "next/image";
+import NavigationButton from "../components/navigationButton";
 
 export default function Seatspage() {
   const { passengerInfo, selectedDepartingFlight, selectedReturningFlight } =
@@ -40,16 +41,16 @@ export default function Seatspage() {
           </div>
           <div className="h-full pl-8 pr-28  bg-purpleBlue flex flex-col justify-center text-grey-100">
             <p className="text-lg">
-              <span>Feb 25 |</span> <span> 7:00AM</span>
+              <span>{selectedDepartingFlight? formatDate(selectedDepartingFlight.departDay) : "N/A"} |</span> <span> {selectedDepartingFlight? selectedDepartingFlight.fromTime : "N/A"}</span>
             </p>
             <p>Departing</p>
           </div>
-          <div className="h-full pl-8   flex flex-col justify-center text-grey-100">
+          {selectedReturningFlight && <div className="h-full pl-8   flex flex-col justify-center text-grey-100">
             <p className="text-lg">
-              <span>Mar 21 |</span> <span> 12:15PM</span>
+              <span>{formatDate(selectedReturningFlight.departDay)} |</span> <span>{selectedReturningFlight.fromTime}</span>
             </p>
             <p>Arriving</p>
-          </div>
+          </div>}
         </div>
         <div className="flex flex-auto justify-center p-4">
           <div className="w-2/5">
@@ -206,13 +207,36 @@ export default function Seatspage() {
           <div></div>
         </div>
         <div className="bg-grey-100 w-full h-36 border-t-2 flex px-10 items-center">
-            <div>
+            <div className="mr-36">
                 <p className=" text-grey-400">Passenger 1</p>
                 <p className="text-lg text-grey-600">{passengerInfo ? passengerInfo.firstName +" "+passengerInfo.lastName :"N/A"}</p>
             </div>
+            <div className="mr-48">
+                <p className=" text-grey-400">Seat number</p>
+                <p className="text-lg text-grey-600">--</p>
+            </div>
+            <NavigationButton text={"Save and close"} borderColor={"border-purpleBlue"} color={"text-purpleBlue mr-5"} />
+            <NavigationButton text={"Next flight"} bgColor={"bg-purpleBlue"} color={"text-trueWhite"}/>
+
 
         </div>
       </div>
     </div>
   );
+}
+
+
+function formatDate(dateString) {
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
+  // Split the input date and create a Date object
+  const [day, month, year] = dateString.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+
+  // Format the date
+  const formattedDate = `${months[date.getMonth()]} ${date.getDate()}`;
+  return formattedDate;
 }
