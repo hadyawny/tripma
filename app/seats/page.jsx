@@ -1,32 +1,28 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useGlobalContext } from "../context/store";
 import Image from "next/image";
 import NavigationButton from "../components/navigationButton";
+import SeatsGrid from "../components/seats/seatsGrid";
 
 export default function Seatspage() {
   const { passengerInfo, selectedDepartingFlight, selectedReturningFlight } =
     useGlobalContext();
-  console.log({
-    passengerInfo,
-    selectedDepartingFlight,
-    selectedReturningFlight,
-  });
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  function getSelectedSeats(seats) {
+    setSelectedSeats(seats);
+  }
 
   return (
     <div className="flex relative h-[150rem]">
-      <Image
-        src="/airplane1.svg"
-        alt="seats location in the airplane"
-        width={2426}
-        height={2965}
-        className="absolute top-16 -left-[30rem] scale-125 "
-      />
+      <SeatsGrid passengerCount={1} getSelectedSeats={getSelectedSeats} bookedSeats={["1A", "2B", "3C", "4D","8A","30A"]} />
 
       <div className="fixed top-0 right-0 w-2/4 bg-trueWhite bg-opacity-60 backdrop-blur-md h-screen flex flex-col border-l-2">
         <div className="bg-grey-800 w-full h-32 flex">
           <div className="px-7 py-5 mx-6 flex flex-col justify-center">
-            <p className="text-2xl font-extrabold text-grey-100">{selectedDepartingFlight? selectedDepartingFlight.from : "N/A"}</p>
+            <p className="text-2xl font-extrabold text-grey-100">
+              {selectedDepartingFlight ? selectedDepartingFlight.from : "N/A"}
+            </p>
             <p className="text-xs text-purpleExtraLight">California, US</p>
           </div>
           <Image
@@ -36,21 +32,37 @@ export default function Seatspage() {
             height={15}
           />
           <div className="px-7 py-5 mx-6 flex flex-col justify-center">
-            <p className="text-2xl font-extrabold text-grey-100">{selectedDepartingFlight? selectedDepartingFlight.to : "N/A"}</p>
+            <p className="text-2xl font-extrabold text-grey-100">
+              {selectedDepartingFlight ? selectedDepartingFlight.to : "N/A"}
+            </p>
             <p className="text-xs text-purpleExtraLight">California, US</p>
           </div>
           <div className="h-full pl-8 pr-28  bg-purpleBlue flex flex-col justify-center text-grey-100">
             <p className="text-lg">
-              <span>{selectedDepartingFlight? formatDate(selectedDepartingFlight.departDay) : "N/A"} |</span> <span> {selectedDepartingFlight? selectedDepartingFlight.fromTime : "N/A"}</span>
+              <span>
+                {selectedDepartingFlight
+                  ? formatDate(selectedDepartingFlight.departDay)
+                  : "N/A"}{" "}
+                |
+              </span>{" "}
+              <span>
+                {" "}
+                {selectedDepartingFlight
+                  ? selectedDepartingFlight.fromTime
+                  : "N/A"}
+              </span>
             </p>
             <p>Departing</p>
           </div>
-          {selectedReturningFlight && <div className="h-full pl-8   flex flex-col justify-center text-grey-100">
-            <p className="text-lg">
-              <span>{formatDate(selectedReturningFlight.departDay)} |</span> <span>{selectedReturningFlight.fromTime}</span>
-            </p>
-            <p>Arriving</p>
-          </div>}
+          {selectedReturningFlight && (
+            <div className="h-full pl-8   flex flex-col justify-center text-grey-100">
+              <p className="text-lg">
+                <span>{formatDate(selectedReturningFlight.departDay)} |</span>{" "}
+                <span>{selectedReturningFlight.fromTime}</span>
+              </p>
+              <p>Arriving</p>
+            </div>
+          )}
         </div>
         <div className="flex flex-auto justify-center p-4">
           <div className="w-2/5">
@@ -121,7 +133,7 @@ export default function Seatspage() {
               className="mt-2 mb-4"
             />
             <p className="text-h4 mt-2 text-grey-600">
-            Business class{" "}
+              Business class{" "}
               <span className="bg-turquoise text-base text-trueWhite px-2 py-px rounded-md ml-2 ">
                 Selected
               </span>
@@ -207,29 +219,49 @@ export default function Seatspage() {
           <div></div>
         </div>
         <div className="bg-grey-100 w-full h-36 border-t-2 flex px-10 items-center">
-            <div className="mr-36">
-                <p className=" text-grey-400">Passenger 1</p>
-                <p className="text-lg text-grey-600">{passengerInfo ? passengerInfo.firstName +" "+passengerInfo.lastName :"N/A"}</p>
-            </div>
-            <div className="mr-48">
-                <p className=" text-grey-400">Seat number</p>
-                <p className="text-lg text-grey-600">--</p>
-            </div>
-            <NavigationButton text={"Save and close"} borderColor={"border-purpleBlue"} color={"text-purpleBlue mr-5"} />
-            <NavigationButton text={"Next flight"} bgColor={"bg-purpleBlue"} color={"text-trueWhite"}/>
-
-
+          <div className="mr-36">
+            <p className=" text-grey-400">Passenger 1</p>
+            <p className="text-lg text-grey-600">
+              {passengerInfo
+                ? passengerInfo.firstName + " " + passengerInfo.lastName
+                : "N/A"}
+            </p>
+          </div>
+          <div className="mr-40">
+            <p className=" text-grey-400">Seat number</p>
+            <p className="text-lg text-grey-600">  {selectedSeats.length == 0 ? "--" : selectedSeats.map((seat) => `${seat}`).join(", ") }
+            </p>
+          </div>
+          <NavigationButton
+            text={"Save and close"}
+            borderColor={"border-purpleBlue"}
+            color={"text-purpleBlue mr-5"}
+          />
+          <NavigationButton
+            text={"Next flight"}
+            bgColor={"bg-purpleBlue"}
+            color={"text-trueWhite"}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-
 function formatDate(dateString) {
   const months = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
 
   // Split the input date and create a Date object

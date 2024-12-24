@@ -1,0 +1,69 @@
+/* SeatBox Styles */
+.seat-box {
+  position: absolute;
+  width: 30px; /* Default width of each seat box */
+  height: 40px; /* Default height of each seat box */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5CD6C0;
+  border-radius: 20%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: transparent; /* Hide seat text */
+  pointer-events: auto; /* Ensure the seat boxes can be clicked */
+
+}
+
+/* Change width/height for rows 6 and beyond */
+.seat-box.row-6,
+.seat-box.row-7,
+.seat-box.row-8,
+.seat-box.row-9,
+.seat-box.row-10,
+.seat-box.row-11,
+.seat-box.row-12,
+.seat-box.row-13,
+.seat-box.row-14,
+.seat-box.row-15,
+.seat-box.row-16,
+.seat-box.row-17,
+.seat-box.row-18,
+.seat-box.row-19,
+.seat-box.row-20,
+.seat-box.row-21,
+.seat-box.row-22,
+.seat-box.row-23,
+.seat-box.row-24,
+.seat-box.row-25,
+.seat-box.row-26,
+.seat-box.row-27,
+.seat-box.row-28,
+.seat-box.row-29,
+.seat-box.row-30,
+.seat-box.row-31,
+.seat-box.row-32,
+.seat-box.row-33 {
+  width: 22px; /* New width for rows from 6 and beyond */
+  height: 33px; /* New height for rows from 6 and beyond */
+  background-color: #2A26D9; /* New color for rows from 6 and beyond */
+}
+
+/* Hover effect */
+.seat-box:hover {
+  background-color: #ED5E76;
+}
+
+.selected {
+  background-color: #ED5E76 !important;
+}
+
+.booked {
+  background-color: #E9E8FC !important;
+  cursor: not-allowed;
+}
+
+
+.booked:hover {
+  background-color: #E9E8FC !important;
+}
