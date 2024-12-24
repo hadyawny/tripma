@@ -2,7 +2,6 @@
 import { useSearchParams } from "next/navigation";
 import React from "react";
 import FlightDealsSearch from "../components/flightDeals/flightDealsSearch";
-import SearchBar from "../components/hero/searchBar";
 import PlacesToStaySearch from "../components/placesToStay/placesToStaySearch";
 import SearchResults from "../components/search/searchResults";
 

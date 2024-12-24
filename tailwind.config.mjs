@@ -19,6 +19,7 @@ export default {
         grey2: "#52527A",
         redLight: "#FDEFEF",
         purpleWhiteLight: "#FAFAFE",
+        disabledBg:"#CBD4E6",
         grey: {
           100: "#FAFAFA",
           200: "#CBD4E6",
