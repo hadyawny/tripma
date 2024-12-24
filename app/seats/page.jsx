@@ -25,7 +25,7 @@ export default function Seatspage() {
       <div className="fixed top-0 right-0 w-2/4 bg-trueWhite bg-opacity-60 backdrop-blur-md h-screen flex flex-col border-l-2">
         <div className="bg-grey-800 w-full h-32 flex">
           <div className="px-7 py-5 mx-6 flex flex-col justify-center">
-            <p className="text-2xl font-extrabold text-grey-100">SFO</p>
+            <p className="text-2xl font-extrabold text-grey-100">{selectedDepartingFlight? selectedDepartingFlight.from : "N/A"}</p>
             <p className="text-xs text-purpleExtraLight">California, US</p>
           </div>
           <Image
@@ -35,7 +35,7 @@ export default function Seatspage() {
             height={15}
           />
           <div className="px-7 py-5 mx-6 flex flex-col justify-center">
-            <p className="text-2xl font-extrabold text-grey-100">SFO</p>
+            <p className="text-2xl font-extrabold text-grey-100">{selectedDepartingFlight? selectedDepartingFlight.to : "N/A"}</p>
             <p className="text-xs text-purpleExtraLight">California, US</p>
           </div>
           <div className="h-full pl-8 pr-28  bg-purpleBlue flex flex-col justify-center text-grey-100">
@@ -205,7 +205,13 @@ export default function Seatspage() {
           </div>
           <div></div>
         </div>
-        <div className="bg-grey-100 w-full h-36 border-t-2"></div>
+        <div className="bg-grey-100 w-full h-36 border-t-2 flex px-10 items-center">
+            <div>
+                <p className=" text-grey-400">Passenger 1</p>
+                <p className="text-lg text-grey-600">{passengerInfo ? passengerInfo.firstName +" "+passengerInfo.lastName :"N/A"}</p>
+            </div>
+
+        </div>
       </div>
     </div>
   );
