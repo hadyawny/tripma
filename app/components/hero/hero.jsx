@@ -15,7 +15,7 @@ export default function Hero() {
         </div> */}
 
         <Image
-          src="/heroTextGradient.png"
+          src="/herotextgradient.svg"
           alt="It's more than just a trip"
           width={756}
           height={265}
