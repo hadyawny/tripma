@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import SearchBar from "../hero/searchBar";
 import { flights } from "@/app/(data)/data";
 import SearchedFlights from "./searchedFlights";
@@ -59,6 +59,7 @@ export default function SearchResults({
   }, [formattedEndDate, toValue, fromValue]);
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="mx-16 my-10">
       <SearchBar
         fromValue={fromValue}
@@ -177,6 +178,7 @@ export default function SearchResults({
         )}
       </div>
     </div>
+    </Suspense>
   );
 }
 
