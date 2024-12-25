@@ -19,11 +19,12 @@ export default function Seatspage() {
   }
 
   useEffect(() => {
-    setPassengerInfo({...passengerInfo,selectedSeats:selectedSeats});  
-    console.log(passengerInfo);  
+    if(passengerInfo){
+      setPassengerInfo({...passengerInfo,selectedSeats:selectedSeats});  
+
+    }
   }, [selectedSeats]);
 
-  console.log(passengerInfo);
   
 
   return (

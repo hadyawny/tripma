@@ -7,6 +7,8 @@ import { useGlobalContext } from "@/app/context/store";
 const SeatsGrid = ({ passengerCount, getSelectedSeats, bookedSeats }) => {
   // State to track selected seats
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [showBusinessClassModal, setShowBusinessClassModal] = useState(false);
+  const [pendingSeat, setPendingSeat] = useState(null);
 
   // Function to handle seat selection
   const handleSeatClick = (seat) => {
@@ -21,11 +23,37 @@ const SeatsGrid = ({ passengerCount, getSelectedSeats, bookedSeats }) => {
       return;
     }
 
+    if(parseInt(seat) <= 5){
+      if (parseInt(seat) <= 5 && !selectedSeats.includes(seat)) {
+        // Trigger modal for business class confirmation
+        setPendingSeat(seat);
+        setShowBusinessClassModal(true);
+        return;
+      }
+    }
+
+    toggleSeatSelection(seat)
+
+  };
+
+
+  const toggleSeatSelection = (seat) => {
     setSelectedSeats((prevSeats) =>
       prevSeats.includes(seat)
         ? prevSeats.filter((s) => s !== seat)
         : [...prevSeats, seat]
     );
+  };
+
+  const handleModalConfirm = () => {
+    toggleSeatSelection(pendingSeat);
+    setPendingSeat(null);
+    setShowBusinessClassModal(false);
+  };
+
+  const handleModalReject = () => {
+    setPendingSeat(null);
+    setShowBusinessClassModal(false);
   };
 
   useEffect(() => {
@@ -286,6 +314,20 @@ const SeatsGrid = ({ passengerCount, getSelectedSeats, bookedSeats }) => {
             ></div>
           );
         })}
+        {showBusinessClassModal && (
+  <>
+    <div className="modal-overlay" onClick={handleModalReject}></div>
+    <div className="modal p-10">
+      <p className="text-h3 text-grey-600 mb-2">Upgrade seat</p>
+      <p className="text-lg text-grey-400 mb-2">Upgrade your seat for only $199, and enjoy 45 percent more leg room, and seats that recline 40 percent more than economy.</p>
+      <div className="flex items-end justify-end">
+      <button className="button2" onClick={handleModalReject}>Cancel</button>
+      <button className="button1" onClick={handleModalConfirm}>Upgrade for $199</button>
+      </div>
+    </div>
+  </>
+)}
+
       </div>
     </div>
   );

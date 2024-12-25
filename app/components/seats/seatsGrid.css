@@ -71,3 +71,56 @@
 .booked:hover {
   background-color: #E9E8FC !important;
 }
+
+
+
+/* Modal Styles */
+.modal {
+  position: fixed; /* Keeps it in place relative to the viewport */
+  top: 50%; /* Centers vertically */
+  left: 50%; /* Centers horizontally */
+  transform: translate(-50%, -50%); /* Aligns the modal perfectly at the center */
+  background-color: #fff; /* White background for the modal */
+  border-radius: 8px; /* Rounded corners for the modal */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25); /* Adds a subtle shadow for depth */
+  z-index: 1000; /* Ensures the modal appears on top of everything else */
+  width: 550px; /* Sets a width for the modal */
+}
+
+/* Modal Button Styles */
+.button1 {
+  border: none; /* Removes the default border */
+  color: #fff; /* White text */
+  background-color: #605DEC;
+  padding: 10px 20px; /* Adds padding for better spacing */
+  margin: 10px; /* Adds spacing between buttons */
+  border-radius: 5px; /* Rounds the button corners */
+  cursor: pointer; /* Shows the pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+  border:  1px solid ;
+  font-size: 18px;
+}
+
+.button2 {
+  border: none; /* Removes the default border */
+  color: #605DEC; /* White text */
+  padding: 10px 20px; /* Adds padding for better spacing */
+  margin: 10px; /* Adds spacing between buttons */
+  border-radius: 5px; /* Rounds the button corners */
+  cursor: pointer; /* Shows the pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+  border:  1px solid ;
+  font-size: 18px;
+
+}
+
+/* Overlay to dim the background when modal is open */
+.modal-overlay {
+  position: fixed; /* Covers the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.219); /* Semi-transparent black */
+  z-index: 999; /* Ensures the overlay is behind the modal but above everything else */
+}
