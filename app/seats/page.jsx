@@ -14,7 +14,7 @@ export default function Seatspage() {
   }
 
   return (
-    <div className="flex relative h-[150rem]">
+    <div className="flex relative h-[160rem]">
       <SeatsGrid passengerCount={1} getSelectedSeats={getSelectedSeats} bookedSeats={["1A", "2B", "3C", "4D","8A","30A"]} />
 
       <div className="fixed top-0 right-0 w-2/4 bg-trueWhite bg-opacity-60 backdrop-blur-md h-screen flex flex-col border-l-2">
