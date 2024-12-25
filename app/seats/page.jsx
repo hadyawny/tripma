@@ -237,7 +237,7 @@ export default function Seatspage() {
             <p className=" text-grey-400">Passenger 1</p>
             <p className="text-lg text-grey-600">
               {passengerInfo
-                ? passengerInfo.firstName + " " + passengerInfo.lastName
+                ? passengerInfo[0].firstName + " " + passengerInfo[0].lastName
                 : "N/A"}
             </p>
           </div>

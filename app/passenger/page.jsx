@@ -10,106 +10,164 @@ export default function PassengerPage() {
     selectedDepartingFlight,
     selectedReturningFlight,
     setPassengerInfo,
-    
+    passengersCount,
   } = useGlobalContext();
+  const [sameAsPassenger, setSameAsPassenger] = useState(
+    Array(passengersCount).fill(false)
+  );
+  const [passengersData, setPassengersData] = useState(
+    Array.from({ length: passengersCount }, () => ({
+      firstName: "",
+      lastName: "",
+      dateOfBirth: "",
+      email: "",
+      phoneNumber: "",
+      emergencyFirstName: "",
+      emergencyLastName: "",
+      emergencyEmail: "",
+      emergencyPhoneNumber: "",
+      travellerNumber: "",
+    }))
+  );
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    dateOfBirth: "",
-    email: "",
-    phoneNumber: "",
-    emergencyFirstName: "",
-    emergencyLastName: "",
-    emergencyEmail: "",
-    emergencyPhoneNumber: "",
-    travellerNumber: "",
-  });
+  const [additionalPassengerData, setAdditionalPassengerData] = useState(
+    Array.from({ length: passengersCount }, () => ({
+      middleName: "",
+      suffix: "",
+      redressNumber: "",
+    }))
+  );
 
-  const [additionalFormData, setAdditionalFormData] = useState({
-    middleName: "",
-    suffix: "",
-    redressNumber: "",
-    middleName: "",
-    middleName: "",
-    middleName: "",
-  });
-
-  const handleAdditionalInputChange = (e) => {
-    const { name, value } = e.target;
-    setAdditionalFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const [bags, setBags] = useState(1);
-
+  const [bags, setBags] = useState(Array(passengersCount).fill(1));
   const [isFormValid, setIsFormValid] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e, index) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setPassengersData((prevData) =>
+      prevData.map((data, i) =>
+        i === index ? { ...data, [name]: value } : data
+      )
+    );
+  };
+
+  const handleAdditionalInputChange = (e, index) => {
+    const { name, value } = e.target;
+    setAdditionalPassengerData((prevData) =>
+      prevData.map((data, i) =>
+        i === index ? { ...data, [name]: value } : data
+      )
+    );
+  };
+
+  const handleBagsChange = (index, increment) => {
+    setBags((prevBags) =>
+      prevBags.map((bag, i) => (i === index ? bag + increment : bag))
+    );
   };
 
   useEffect(() => {
-    const isValid = Object.values(formData).every(
-      (value) => value.trim() !== ""
+    const allValid = passengersData.every((data) =>
+      Object.values(data).every((value) => value.trim() !== "")
     );
-    setIsFormValid(isValid);
-  }, [formData]);
+    setIsFormValid(allValid);
+  }, [passengersData]);
 
-  function savePassengerData() {
-    setPassengerInfo({
-      ...formData,
-      bags: bags,
-      ...additionalFormData,
-    });
-  }
+  const savePassengerData = () => {
+    setPassengerInfo(
+      passengersData.map((data, index) => ({
+        ...data,
+        ...additionalPassengerData[index],
+        bags: bags[index],
+      }))
+    );
+  };
+
+  const handleCheckboxChange = (index) => {
+    const updatedSameAsPassenger = [...sameAsPassenger];
+    updatedSameAsPassenger[index] = !updatedSameAsPassenger[index]; // Toggle the checkbox state
+
+    setSameAsPassenger(updatedSameAsPassenger);
+
+    if (updatedSameAsPassenger[index]) {
+      setPassengersData((prevData) =>
+        prevData.map((data, i) =>
+          i === index
+            ? {
+                ...data,
+                emergencyFirstName: passengersData[0].emergencyFirstName,
+                emergencyLastName: passengersData[0].emergencyLastName,
+                emergencyEmail: passengersData[0].emergencyEmail,
+                emergencyPhoneNumber: passengersData[0].emergencyPhoneNumber,
+              }
+            : data
+        )
+      );
+    } else {
+      setPassengersData((prevData) =>
+        prevData.map((data, i) =>
+          i === index
+            ? {
+                ...data,
+                emergencyFirstName: "",
+                emergencyLastName: "",
+                emergencyEmail: "",
+                emergencyPhoneNumber: "",
+              }
+            : data
+        )
+      );
+    }
+  };
 
   return (
     <div className="flex mx-24 my-14">
-      <div className="w-3/5 ">
+      <div className="w-3/5">
         <p className="text-h3 text-purpleBlue mb-4">Passenger information</p>
         <p className="text-lg text-grey-400 mb-9">
           Enter the required information for each traveler and be sure that it
           exactly matches the government-issued ID presented at the airport.
         </p>
 
-        <div>
-          <form action="">
-            <p className="text-h4 text-grey-600">Passenger 1 (Adult)</p>
+        {Array.from({ length: passengersCount }).map((_, index) => (
+          <div key={index} className="mb-10">
+            {/* form for each passenger */}
+            <p className="text-h4 text-grey-600">Passenger {index + 1}</p>
+
             <div className="flex text-lg mt-6">
               <input
                 type="text"
                 name="firstName"
                 className="border px-3 py-2 rounded border-grey-300 mr-6"
                 placeholder="First name*"
-                value={formData.firstName}
-                onChange={handleInputChange}
+                value={passengersData[index].firstName}
+                onChange={(e) => handleInputChange(e, index)}
               />
               <input
                 type="text"
                 name="middleName"
                 className="border px-3 py-2 rounded border-grey-300 mr-6"
                 placeholder="Middle"
-                value={additionalFormData.middleName}
-                onChange={handleAdditionalInputChange}
+                value={additionalPassengerData[index].middleName}
+                onChange={(e) => handleAdditionalInputChange(e, index)}
               />
               <input
                 type="text"
                 name="lastName"
                 className="border px-3 py-2 rounded border-grey-300 mr-6"
                 placeholder="Last name*"
-                value={formData.lastName}
-                onChange={handleInputChange}
+                value={passengersData[index].lastName}
+                onChange={(e) => handleInputChange(e, index)}
               />
             </div>
+
             <div className="flex text-lg mt-6">
               <input
                 type="text"
                 name="suffix"
                 className="border px-3 py-2 rounded border-grey-300 mr-6"
                 placeholder="Suffix"
-                value={additionalFormData.suffix}
-                onChange={handleAdditionalInputChange}
+                value={additionalPassengerData[index].suffix}
+                onChange={(e) => handleAdditionalInputChange(e, index)}
               />
               <div className="flex flex-col relative">
                 <input
@@ -117,79 +175,89 @@ export default function PassengerPage() {
                   name="dateOfBirth"
                   className="border pl-3 pr-12 py-2 rounded border-grey-300 mr-6"
                   placeholder="Date of birth*"
-                  value={formData.dateOfBirth}
-                  onChange={handleInputChange}
+                  value={passengersData[index].dateOfBirth}
+                  onChange={(e) => handleInputChange(e, index)}
                 />
                 <p className="text-xs text-grey-400 absolute -bottom-6 left-1">
                   MM/DD/YY
                 </p>
               </div>
             </div>
+
             <div className="flex text-lg mt-12">
               <input
                 type="email"
                 name="email"
                 className="border pl-3 pr-28 py-2 rounded border-grey-300 mr-6"
                 placeholder="Email address*"
-                value={formData.email}
-                onChange={handleInputChange}
+                value={passengersData[index].email}
+                onChange={(e) => handleInputChange(e, index)}
               />
               <input
                 type="text"
                 name="phoneNumber"
                 className="border pl-3 pr-28 py-2 rounded border-grey-300 mr-6"
                 placeholder="Phone number*"
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
+                value={passengersData[index].phoneNumber}
+                onChange={(e) => handleInputChange(e, index)}
               />
             </div>
+
             <div className="flex text-lg mt-6">
               <input
                 type="text"
                 name="redressNumber"
                 className="border pl-3 pr-28 py-2 rounded border-grey-300 mr-6"
                 placeholder="Redress number"
-                value={additionalFormData.redressNumber}
-                onChange={handleAdditionalInputChange}
+                value={additionalPassengerData[index].redressNumber}
+                onChange={(e) => handleAdditionalInputChange(e, index)}
               />
               <input
                 type="text"
                 name="travellerNumber"
                 className="border pl-3 pr-28 py-2 rounded border-grey-300 mr-6"
                 placeholder="Known traveller number*"
-                value={formData.travellerNumber}
-                onChange={handleInputChange}
+                value={passengersData[index].travellerNumber}
+                onChange={(e) => handleInputChange(e, index)}
               />
             </div>
+
             <p className="text-h4 text-grey-600 mt-12">
               Emergency contact information
             </p>
-            <div className="mt-7">
-              <input
-                type="checkbox"
-                name="sameAsPassenger1"
-                id="sameAsPassenger1"
-              />
-              <label htmlFor="sameAsPassenger1" className="text-grey-600 ml-2">
-                Same as Passenger 1
-              </label>
-            </div>
+            {index !== 0 && (
+              <div className="mt-7">
+                <input
+                  type="checkbox"
+                  name="sameAsPassenger1"
+                  id="sameAsPassenger1"
+                  checked={sameAsPassenger[index]}
+                  onChange={() => handleCheckboxChange(index)}
+                />
+                <label
+                  htmlFor="sameAsPassenger1"
+                  className="text-grey-600 ml-2"
+                >
+                  Same as Passenger 1
+                </label>
+              </div>
+            )}
             <div className="flex text-lg mt-7">
               <input
                 type="text"
                 name="emergencyFirstName"
                 className="border pl-3 pr-28 py-2 rounded border-grey-300 mr-6"
                 placeholder="First name*"
-                value={formData.emergencyFirstName}
-                onChange={handleInputChange}
+                value={passengersData[index].emergencyFirstName}
+                onChange={(e) => handleInputChange(e, index)}
               />
               <input
                 type="text"
                 name="emergencyLastName"
                 className="border pl-3 pr-28 py-2 rounded border-grey-300 mr-6"
                 placeholder="Last name*"
-                value={formData.emergencyLastName}
-                onChange={handleInputChange}
+                value={passengersData[index].emergencyLastName}
+                onChange={(e) => handleInputChange(e, index)}
               />
             </div>
             <div className="flex text-lg mt-6">
@@ -198,19 +266,22 @@ export default function PassengerPage() {
                 name="emergencyEmail"
                 className="border pl-3 pr-28 py-2 rounded border-grey-300 mr-6"
                 placeholder="Email address*"
-                value={formData.emergencyEmail}
-                onChange={handleInputChange}
+                value={passengersData[index].emergencyEmail}
+                onChange={(e) => handleInputChange(e, index)}
               />
               <input
                 type="text"
                 name="emergencyPhoneNumber"
                 className="border pl-3 pr-28 py-2 rounded border-grey-300 mr-6"
                 placeholder="Phone number*"
-                value={formData.emergencyPhoneNumber}
-                onChange={handleInputChange}
+                value={passengersData[index].emergencyLastName}
+                onChange={(e) => handleInputChange(e, index)}
               />
             </div>
-            <p className="text-h4 text-grey-600 mt-12">Bag information</p>
+          </div>
+        ))}
+        <div>
+        <p className="text-h4 text-grey-600 mt-12">Bag information</p>
             <p className="text-lg text-grey-400 mt-3 ">
               Each passenger is allowed one free carry-on bag and one personal
               item. First checked bag for each passenger is also free. Second
@@ -218,24 +289,42 @@ export default function PassengerPage() {
               <span className="text-purpleBlue"> See the full bag policy.</span>
             </p>
             <div className="mt-9 text-h4 flex">
-              <div className="mr-80">
-                <p className="text-grey-400">Passenger 1</p>
-                <p className="text-grey-600 mt-4">
-                  <span>
-                    {formData.firstName ? formData.firstName : "First"}{" "}
-                  </span>
-                  <span>{formData.lastName ? formData.lastName : "Last"} </span>
-                </p>
+              <div className="w-2/4">
+                <p className="text-grey-400">Passengers </p>
+                
               </div>
               <div>
                 <p className="text-grey-400">Checked bags</p>
-                <div className="flex items-center mt-4">
+                
+              </div>
+            </div>
+        </div>
+        {Array.from({ length: passengersCount }).map((_, index) => (
+          <div key={index} className="">
+            
+            <div className="mt-4 text-h4 flex items-center justify-start  ">
+              <div className="w-2/4">
+                <p className="text-grey-600 mt-4">
+                  <span>
+                    {passengersData[index].firstName
+                      ? passengersData[index].firstName
+                      : `Passenger ${index+1}`}{" "}
+                  </span>
+                  <span>
+                    {passengersData[index].lastName
+                      ? passengersData[index].lastName
+                      : ""}{" "}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <div className="flex  mt-4">
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      setBags(bags - 1);
+                      handleBagsChange(index, -1);
                     }}
-                    disabled={bags <= 1}
+                    disabled={bags[index] <= 1}
                     className="mr-4"
                   >
                     <Image
@@ -246,12 +335,12 @@ export default function PassengerPage() {
                       className="object-contain "
                     />
                   </button>
-                  <span className="text-lg text-grey-600">{bags}</span>
+                  <span className="text-lg text-grey-600">{bags[index]}</span>
                   <button
                     onClick={(e) => {
                       e.preventDefault();
 
-                      setBags(bags + 1);
+                      handleBagsChange(index, 1);
                     }}
                     className="ml-4"
                   >
@@ -266,23 +355,24 @@ export default function PassengerPage() {
                 </div>
               </div>
             </div>
-            <div className="mt-20 flex gap-10">
-              <NavigationButton
-                text={"Save and close"}
-                bgColor={"text-purpleBlue"}
-                borderColor={"border-purpleBlue"}
-              />
-              <NavigationButton
-                text={"Select Seats"}
-                color={"text-grey-100"}
-                bgColor={"bg-purpleBlue"}
-                borderColor={"border-purpleBlue"}
-                destination={"/seats"}
-                disabled={!isFormValid}
-                func={savePassengerData}
-              />
-            </div>
-          </form>
+          </div>
+        ))}
+
+        <div className="mt-20 flex gap-10">
+          <NavigationButton
+            text={"Save and close"}
+            bgColor={"text-purpleBlue"}
+            borderColor={"border-purpleBlue"}
+          />
+          <NavigationButton
+            text={"Select Seats"}
+            color={"text-grey-100"}
+            bgColor={"bg-purpleBlue"}
+            borderColor={"border-purpleBlue"}
+            destination={"/seats"}
+            disabled={!isFormValid}
+            func={savePassengerData}
+          />
         </div>
       </div>
       <div className="w-2/5">
@@ -291,17 +381,6 @@ export default function PassengerPage() {
             <SelectedFlights
               departingFlightInfo={selectedDepartingFlight}
               returningFlightInfo={selectedReturningFlight}
-            />
-          )}
-          {selectedDepartingFlight && (
-            <NavigationButton
-              text={"Select Seats"}
-              color={"text-grey-100"}
-              bgColor={"bg-purpleBlue"}
-              borderColor={"border-purpleBlue"}
-              destination={"/seats"}
-              disabled={!isFormValid}
-              func={savePassengerData}
             />
           )}
           <Image
