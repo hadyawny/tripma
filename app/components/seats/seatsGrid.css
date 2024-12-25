@@ -56,6 +56,10 @@
 
 .selected {
   background-color: #ED5E76 !important;
+  background-image: url('/seatselectedcheck.svg'); /* Path to the checkmark image */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto; /* Adjust the size of the image */
 }
 
 .booked {
