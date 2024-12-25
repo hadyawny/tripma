@@ -6,7 +6,7 @@ import NavigationButton from "../components/navigationButton";
 import SeatsGrid from "../components/seats/seatsGrid";
 
 export default function Seatspage() {
-  const { passengerInfo, selectedDepartingFlight, selectedReturningFlight ,passengersCount ,setPassengerInfo} =
+  const { passengerInfo, selectedDepartingFlight, selectedReturningFlight ,passengersCount ,setSelectedSeatsDeparting, selectedSeatsDeparting} =
     useGlobalContext();
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [isBusinessClass,setIsBusinessClass] = useState(false);
@@ -19,9 +19,8 @@ export default function Seatspage() {
   }
 
   useEffect(() => {
-    if(passengerInfo){
-      setPassengerInfo({...passengerInfo,selectedSeats:selectedSeats});  
-
+    if(selectedSeats.length > 0) {
+      setSelectedSeatsDeparting(selectedSeats);  
     }
   }, [selectedSeats]);
 

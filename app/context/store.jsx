@@ -11,6 +11,10 @@ const GlobalContext = createContext({
     setPassengerInfo: () => {},
     passengersCount: 1,
     setPassengersCount: () => {},
+    selectedSeatsDeparting: null,
+    setSelectedSeatsDeparting: () => {},
+    selectedSeatsReturning: null,
+    setSelectedSeatsReturning: () => {},
   });
 
 // Context Provider Component
@@ -19,6 +23,9 @@ export const GlobalContextProvider = ({ children }) => {
     const [selectedReturningFlight, setSelectedReturningFlight] = useState(null);
     const [passengerInfo, setPassengerInfo] = useState(null);
     const [passengersCount, setPassengersCount] = useState(1);
+    const [selectedSeatsDeparting, setSelectedSeatsDeparting] = useState(null);
+    const [selectedSeatsReturning, setSelectedSeatsReturning] = useState(null);
+
 
 
   
@@ -32,7 +39,11 @@ export const GlobalContextProvider = ({ children }) => {
           passengerInfo,
           setPassengerInfo,
           passengersCount,
-          setPassengersCount
+          setPassengersCount,
+          selectedSeatsDeparting,
+          setSelectedSeatsDeparting,
+          selectedSeatsReturning,
+          setSelectedSeatsReturning,
         }}
       >
         {children}
