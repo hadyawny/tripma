@@ -1,21 +1,34 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../context/store";
 import Image from "next/image";
 import NavigationButton from "../components/navigationButton";
 import SeatsGrid from "../components/seats/seatsGrid";
 
 export default function Seatspage() {
-  const { passengerInfo, selectedDepartingFlight, selectedReturningFlight ,passengersCount} =
+  const { passengerInfo, selectedDepartingFlight, selectedReturningFlight ,passengersCount ,setPassengerInfo} =
     useGlobalContext();
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [isBusinessClass,setIsBusinessClass] = useState(false);
   function getSelectedSeats(seats) {
     setSelectedSeats(seats);
+    setIsBusinessClass(seats.some((seat) => {
+      const row = parseInt(seat); 
+      return row <= 5; 
+    }));
   }
+
+  useEffect(() => {
+    setPassengerInfo({...passengerInfo,selectedSeats:selectedSeats});  
+    console.log(passengerInfo);  
+  }, [selectedSeats]);
+
+  console.log(passengerInfo);
+  
 
   return (
     <div className="flex relative h-[160rem]">
-      <SeatsGrid passengerCount={passengersCount} getSelectedSeats={getSelectedSeats} bookedSeats={["1A", "2B", "3C", "4D","8A","30A"]} />
+      <SeatsGrid passengerCount={passengersCount} getSelectedSeats={getSelectedSeats} bookedSeats={selectedDepartingFlight ? selectedDepartingFlight.bookedSeats : []} />
 
       <div className="fixed top-0 right-0 w-2/4 bg-trueWhite bg-opacity-60 backdrop-blur-md h-screen flex flex-col border-l-2">
         <div className="bg-grey-800 w-full h-32 flex">
@@ -23,7 +36,7 @@ export default function Seatspage() {
             <p className="text-2xl font-extrabold text-grey-100">
               {selectedDepartingFlight ? selectedDepartingFlight.from : "N/A"}
             </p>
-            <p className="text-xs text-purpleExtraLight">California, US</p>
+            <p className="text-xs text-purpleExtraLight">{selectedDepartingFlight ? selectedDepartingFlight.fromCity : "N/A"}</p>
           </div>
           <Image
             src="/arrownext.svg"
@@ -35,7 +48,7 @@ export default function Seatspage() {
             <p className="text-2xl font-extrabold text-grey-100">
               {selectedDepartingFlight ? selectedDepartingFlight.to : "N/A"}
             </p>
-            <p className="text-xs text-purpleExtraLight">California, US</p>
+            <p className="text-xs text-purpleExtraLight">{selectedDepartingFlight ? selectedDepartingFlight.toCity : "N/A"}</p>
           </div>
           <div className="h-full pl-8 pr-28  bg-purpleBlue flex flex-col justify-center text-grey-100">
             <p className="text-lg">
@@ -75,9 +88,9 @@ export default function Seatspage() {
             />
             <p className="text-h4 mt-2 text-grey-600">
               Economy{" "}
-              <span className="bg-purpleBlue text-base text-trueWhite px-2 py-px rounded-md ml-2 ">
+              {!isBusinessClass && <span className="bg-purpleBlue text-base text-trueWhite px-2 py-px rounded-md ml-2 ">
                 Selected
-              </span>
+              </span>}
             </p>
             <p className="mt-4 text-grey-400">
               Rest and recharge during your flight with extended leg room,
@@ -134,9 +147,9 @@ export default function Seatspage() {
             />
             <p className="text-h4 mt-2 text-grey-600">
               Business class{" "}
-              <span className="bg-turquoise text-base text-trueWhite px-2 py-px rounded-md ml-2 ">
+              {  isBusinessClass && <span className="bg-turquoise text-base text-trueWhite px-2 py-px rounded-md ml-2 ">
                 Selected
-              </span>
+              </span>}
             </p>
             <p className="mt-4 text-grey-400">
               Rest and recharge during your flight with extended leg room,

@@ -1,35 +1,36 @@
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import "./seatsGrid.css";
+import { useGlobalContext } from "@/app/context/store";
 
-const SeatsGrid = ({passengerCount,getSelectedSeats,bookedSeats}) => {
+const SeatsGrid = ({ passengerCount, getSelectedSeats, bookedSeats }) => {
   // State to track selected seats
   const [selectedSeats, setSelectedSeats] = useState([]);
 
   // Function to handle seat selection
   const handleSeatClick = (seat) => {
-
     if (bookedSeats.includes(seat)) {
-        return;
-      }
+      return;
+    }
 
-      if (selectedSeats.length >= passengerCount && !selectedSeats.includes(seat)) {
-        return;
-      }
+    if (
+      selectedSeats.length >= passengerCount &&
+      !selectedSeats.includes(seat)
+    ) {
+      return;
+    }
 
-    setSelectedSeats(
-      (prevSeats) =>
-        prevSeats.includes(seat)
-          ? prevSeats.filter((s) => s !== seat) 
-          : [...prevSeats, seat] 
+    setSelectedSeats((prevSeats) =>
+      prevSeats.includes(seat)
+        ? prevSeats.filter((s) => s !== seat)
+        : [...prevSeats, seat]
     );
   };
 
-
-useEffect(() => {
+  useEffect(() => {
     getSelectedSeats(selectedSeats);
-  }, [selectedSeats]); 
+  }, [selectedSeats]);
 
   const seats = [
     { seat: "1A", top: "21.3%", left: "46.3%" },
@@ -53,14 +54,13 @@ useEffect(() => {
     { seat: "5C", top: "29.3%", left: "50.8%" },
     { seat: "5D", top: "29.3%", left: "52.6%" },
 
-
     { seat: "6A", top: "32.9%", left: "46.1%" },
     { seat: "6B", top: "32.9%", left: "47.3%" },
     { seat: "6C", top: "32.9%", left: "48.5%" },
     { seat: "6D", top: "32.9%", left: "50.7%" },
     { seat: "6E", top: "32.9%", left: "51.9%" },
     { seat: "6F", top: "32.9%", left: "53%" },
-   
+
     { seat: "7A", top: "34.3%", left: "46.1%" },
     { seat: "7B", top: "34.3%", left: "47.3%" },
     { seat: "7C", top: "34.3%", left: "48.5%" },
@@ -81,14 +81,14 @@ useEffect(() => {
     { seat: "9D", top: "37.4%", left: "50.7%" },
     { seat: "9E", top: "37.4%", left: "51.9%" },
     { seat: "9F", top: "37.4%", left: "53%" },
-    
+
     { seat: "10A", top: "38.9%", left: "46.1%" },
     { seat: "10B", top: "38.9%", left: "47.3%" },
     { seat: "10C", top: "38.9%", left: "48.5%" },
     { seat: "10D", top: "38.9%", left: "50.7%" },
     { seat: "10E", top: "38.9%", left: "51.9%" },
     { seat: "10F", top: "38.9%", left: "53%" },
-    
+
     { seat: "11A", top: "40.4%", left: "46.1%" },
     { seat: "11B", top: "40.4%", left: "47.3%" },
     { seat: "11C", top: "40.4%", left: "48.5%" },
@@ -102,7 +102,7 @@ useEffect(() => {
     { seat: "12D", top: "41.9%", left: "50.7%" },
     { seat: "12E", top: "41.9%", left: "51.9%" },
     { seat: "12F", top: "41.9%", left: "53%" },
-    
+
     { seat: "13A", top: "43.3%", left: "46.1%" },
     { seat: "13B", top: "43.3%", left: "47.3%" },
     { seat: "13C", top: "43.3%", left: "48.5%" },
