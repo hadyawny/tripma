@@ -174,6 +174,8 @@ export default function SearchResults({
             selectedDepartingFlight={selectedDepartingFlight}
             selectedReturningFlight={selectedReturningFlight}
             isRoundTrip={isRoundTripValue}
+            adults={adultsValue}
+            minors={minorsValue}
           />
         )}
       </div>

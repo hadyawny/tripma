@@ -7,12 +7,20 @@ export default function TotalPrice({
   selectedDepartingFlight,
   selectedReturningFlight,
   isRoundTrip,
+  adults,
+  minors
 }) {
 
-  const { setSelectedDepartingFlight, setSelectedReturningFlight } = useGlobalContext();
+
+
+
+
+
+  const { setSelectedDepartingFlight, setSelectedReturningFlight ,setPassengersCount } = useGlobalContext();
   const handleNavigation = () => {
     setSelectedDepartingFlight(selectedDepartingFlight);
     setSelectedReturningFlight(selectedReturningFlight);
+    setPassengersCount(Number(adults)+Number(minors));
   };
 
 
