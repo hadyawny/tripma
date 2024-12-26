@@ -379,7 +379,17 @@ export default function PassengerPage() {
               departingFlightInfo={selectedDepartingFlight}
               returningFlightInfo={selectedReturningFlight}
             />
+            
           )}
+          <NavigationButton
+            text={"Select Seats"}
+            color={"text-grey-100"}
+            bgColor={"bg-purpleBlue"}
+            borderColor={"border-purpleBlue"}
+            destination={"/seats/departure"}
+            disabled={!isFormValid}
+            func={savePassengerData}
+          />
           <Image
             src="/passengersbags.svg"
             alt="picture of passenger bag"

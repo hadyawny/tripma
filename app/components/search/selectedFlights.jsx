@@ -4,6 +4,7 @@ import React from "react";
 export default function SelectedFlights({
   departingFlightInfo,
   returningFlightInfo,
+  seatUpgrades=0
 }) {
   const departingFlightLength = calculateTripLength(
     departingFlightInfo.fromTime,
@@ -11,8 +12,8 @@ export default function SelectedFlights({
   );
 
   const totalPrice = returningFlightInfo
-    ? departingFlightInfo.price + returningFlightInfo.price
-    : departingFlightInfo.price;
+    ? departingFlightInfo.price + returningFlightInfo.price + (seatUpgrades * 199)
+    : departingFlightInfo.price + (seatUpgrades * 199);
   const taxes = totalPrice * (24 / 100);
   const subtotal = totalPrice - taxes;
 
@@ -72,18 +73,21 @@ export default function SelectedFlights({
           </div>
         )}
       </div>
-
+      {seatUpgrades !==0 && <div className="mb-4">
+        <span className="mr-10">Seat upgrade</span>
+        <span>${(seatUpgrades*199).toFixed(2)}</span>
+      </div>}
       <div>
         <span className="mr-10">Subtotal</span>
-        <span>${subtotal}</span>
+        <span>${subtotal.toFixed(2)}</span>
       </div>
       <div>
         <span className="mr-10">Taxes and Fees</span>
-        <span>${taxes}</span>
+        <span>${taxes.toFixed(2)}</span>
       </div>
       <div className="mb-10">
         <span className="mr-10 ">Total</span>
-        <span>${totalPrice}</span>
+        <span>${totalPrice.toFixed(2)}</span>
       </div>
     </>
   );
