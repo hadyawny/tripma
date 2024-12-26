@@ -369,7 +369,7 @@ export default function PassengerPage() {
             color={"text-grey-100"}
             bgColor={"bg-purpleBlue"}
             borderColor={"border-purpleBlue"}
-            destination={"/seats"}
+            destination={"/seats/departure"}
             disabled={!isFormValid}
             func={savePassengerData}
           />

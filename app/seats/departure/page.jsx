@@ -1,34 +1,56 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useGlobalContext } from "../context/store";
+import { useGlobalContext } from "../../context/store";
 import Image from "next/image";
-import NavigationButton from "../components/navigationButton";
-import SeatsGrid from "../components/seats/seatsGrid";
+import NavigationButton from "../../components/navigationButton";
+import SeatsGrid from "../../components/seats/seatsGrid";
 
 export default function Seatspage() {
-  const { passengerInfo, selectedDepartingFlight, selectedReturningFlight ,passengersCount ,setSelectedSeatsDeparting, selectedSeatsDeparting} =
-    useGlobalContext();
+  const {
+    passengerInfo,
+    selectedDepartingFlight,
+    selectedReturningFlight,
+    passengersCount,
+    setSelectedSeatsDeparting,
+    selectedSeatsDeparting,
+  } = useGlobalContext();
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [isBusinessClass,setIsBusinessClass] = useState(false);
+  const [isBusinessClass, setIsBusinessClass] = useState(false);
+  const [isSeatsBooked, setIsSeatsBooked] = useState(false);
+
   function getSelectedSeats(seats) {
     setSelectedSeats(seats);
-    setIsBusinessClass(seats.some((seat) => {
-      const row = parseInt(seat); 
-      return row <= 5; 
-    }));
+    setIsBusinessClass(
+      seats.some((seat) => {
+        const row = parseInt(seat);
+        return row <= 5;
+      })
+    );
   }
 
   useEffect(() => {
-    if(selectedSeats.length > 0) {
-      setSelectedSeatsDeparting(selectedSeats);  
+    if (selectedSeats.length > 0) {
+      setSelectedSeatsDeparting(selectedSeats);
+    }
+
+    if (selectedSeats.length == passengersCount) {
+      console.log({selectedSeats,passengersCount});
+      
+      setIsSeatsBooked(true);
+    } else {
+      setIsSeatsBooked(false);
     }
   }, [selectedSeats]);
 
-  
-
   return (
     <div className="flex relative h-[160rem]">
-      <SeatsGrid passengerCount={passengersCount} getSelectedSeats={getSelectedSeats} bookedSeats={selectedDepartingFlight ? selectedDepartingFlight.bookedSeats : []} />
+      <SeatsGrid
+        passengerCount={passengersCount}
+        getSelectedSeats={getSelectedSeats}
+        bookedSeats={
+          selectedDepartingFlight ? selectedDepartingFlight.bookedSeats : []
+        }
+      />
 
       <div className="fixed top-0 right-0 w-2/4 bg-trueWhite bg-opacity-60 backdrop-blur-md h-screen flex flex-col border-l-2">
         <div className="bg-grey-800 w-full h-32 flex">
@@ -36,7 +58,11 @@ export default function Seatspage() {
             <p className="text-2xl font-extrabold text-grey-100">
               {selectedDepartingFlight ? selectedDepartingFlight.from : "N/A"}
             </p>
-            <p className="text-xs text-purpleExtraLight">{selectedDepartingFlight ? selectedDepartingFlight.fromCity : "N/A"}</p>
+            <p className="text-xs text-purpleExtraLight">
+              {selectedDepartingFlight
+                ? selectedDepartingFlight.fromCity
+                : "N/A"}
+            </p>
           </div>
           <Image
             src="/arrownext.svg"
@@ -48,9 +74,11 @@ export default function Seatspage() {
             <p className="text-2xl font-extrabold text-grey-100">
               {selectedDepartingFlight ? selectedDepartingFlight.to : "N/A"}
             </p>
-            <p className="text-xs text-purpleExtraLight">{selectedDepartingFlight ? selectedDepartingFlight.toCity : "N/A"}</p>
+            <p className="text-xs text-purpleExtraLight">
+              {selectedDepartingFlight ? selectedDepartingFlight.toCity : "N/A"}
+            </p>
           </div>
-          <div className="h-full pl-8 pr-28  bg-purpleBlue flex flex-col justify-center text-grey-100">
+          <div className="h-full pl-8 pr-28  bg-purpleBlue flex flex-col justify-center text-grey-100 relative">
             <p className="text-lg">
               <span>
                 {selectedDepartingFlight
@@ -66,6 +94,7 @@ export default function Seatspage() {
               </span>
             </p>
             <p>Departing</p>
+            <Image src="/activearrow.svg" alt="arrow" width={20} height={8} className="absolute bottom-0 left-32 "/>
           </div>
           {selectedReturningFlight && (
             <div className="h-full pl-8   flex flex-col justify-center text-grey-100">
@@ -88,9 +117,11 @@ export default function Seatspage() {
             />
             <p className="text-h4 mt-2 text-grey-600">
               Economy{" "}
-              {!isBusinessClass && <span className="bg-purpleBlue text-base text-trueWhite px-2 py-px rounded-md ml-2 ">
-                Selected
-              </span>}
+              {!isBusinessClass && (
+                <span className="bg-purpleBlue text-base text-trueWhite px-2 py-px rounded-md ml-2 ">
+                  Selected
+                </span>
+              )}
             </p>
             <p className="mt-4 text-grey-400">
               Rest and recharge during your flight with extended leg room,
@@ -147,9 +178,11 @@ export default function Seatspage() {
             />
             <p className="text-h4 mt-2 text-grey-600">
               Business class{" "}
-              {  isBusinessClass && <span className="bg-turquoise text-base text-trueWhite px-2 py-px rounded-md ml-2 ">
-                Selected
-              </span>}
+              {isBusinessClass && (
+                <span className="bg-turquoise text-base text-trueWhite px-2 py-px rounded-md ml-2 ">
+                  Selected
+                </span>
+              )}
             </p>
             <p className="mt-4 text-grey-400">
               Rest and recharge during your flight with extended leg room,
@@ -242,7 +275,11 @@ export default function Seatspage() {
           </div>
           <div className="mr-40">
             <p className=" text-grey-400">Seat number</p>
-            <p className="text-lg text-grey-600">  {selectedSeats.length == 0 ? "--" : selectedSeats.map((seat) => `${seat}`).join(", ") }
+            <p className="text-lg text-grey-600">
+              {" "}
+              {selectedSeats.length == 0
+                ? "--"
+                : selectedSeats.map((seat) => `${seat}`).join(", ")}
             </p>
           </div>
           <NavigationButton
@@ -251,9 +288,11 @@ export default function Seatspage() {
             color={"text-purpleBlue mr-5"}
           />
           <NavigationButton
-            text={"Next flight"}
+            text={ selectedReturningFlight? "Next flight" : "Payment Method"}
             bgColor={"bg-purpleBlue"}
             color={"text-trueWhite"}
+            disabled={isSeatsBooked ? false : true}
+            destination={selectedReturningFlight? "/seats/return" : "/payment"}
           />
         </div>
       </div>
