@@ -33,6 +33,8 @@ export default {
         },
         redLight: "#FDEFEF",
         turquoise: "#5CD6C0",
+        lightGreen:"#e9fdfb",
+        deepGreen:"#007B65"
       },
       fontFamily: {
         nunito: ['"Nunito Sans"', "sans-serif"],
