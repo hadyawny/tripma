@@ -48,16 +48,13 @@ export default function SearchBar({
   function handleSearchSubmit(e) {
     e.preventDefault();
 
-    // Check if required fields are filled
     if (!from || !to || !startDate) {
       setError("Please fill out all required fields.");
       return;
     }
 
-    // Clear error message if validation passes
     setError("");
 
-    // Prepare the query parameters
     const queryParams = new URLSearchParams({
       from: from,
       to: to,
