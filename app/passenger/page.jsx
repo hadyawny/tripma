@@ -171,7 +171,7 @@ export default function PassengerPage() {
               />
               <div className="flex flex-col relative">
                 <input
-                  type="text"
+                  type="date"
                   name="dateOfBirth"
                   className="border pl-3 pr-12 py-2 rounded border-grey-300 mr-6"
                   placeholder="Date of birth*"
