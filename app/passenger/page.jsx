@@ -84,10 +84,10 @@ export default function PassengerPage() {
 
   const handleCheckboxChange = (index) => {
     const updatedSameAsPassenger = [...sameAsPassenger];
-    updatedSameAsPassenger[index] = !updatedSameAsPassenger[index]; // Toggle the checkbox state
+    updatedSameAsPassenger[index] = !updatedSameAsPassenger[index];
 
     setSameAsPassenger(updatedSameAsPassenger);
-
+    console.log(updatedSameAsPassenger, index);
     if (updatedSameAsPassenger[index]) {
       setPassengersData((prevData) =>
         prevData.map((data, i) =>
@@ -229,13 +229,13 @@ export default function PassengerPage() {
               <div className="mt-7">
                 <input
                   type="checkbox"
-                  name="sameAsPassenger1"
-                  id="sameAsPassenger1"
+                  name={`sameAsPassenger${index}`}
+                  id={`sameAsPassenger${index}`}
                   checked={sameAsPassenger[index]}
                   onChange={() => handleCheckboxChange(index)}
                 />
                 <label
-                  htmlFor="sameAsPassenger1"
+                  htmlFor={`sameAsPassenger${index}`} // Use the corresponding ID
                   className="text-grey-600 ml-2"
                 >
                   Same as Passenger 1
@@ -281,34 +281,31 @@ export default function PassengerPage() {
           </div>
         ))}
         <div>
-        <p className="text-h4 text-grey-600 mt-12">Bag information</p>
-            <p className="text-lg text-grey-400 mt-3 ">
-              Each passenger is allowed one free carry-on bag and one personal
-              item. First checked bag for each passenger is also free. Second
-              bag check fees are waived for loyalty program members.{" "}
-              <span className="text-purpleBlue"> See the full bag policy.</span>
-            </p>
-            <div className="mt-9 text-h4 flex">
-              <div className="w-2/4">
-                <p className="text-grey-400">Passengers </p>
-                
-              </div>
-              <div>
-                <p className="text-grey-400">Checked bags</p>
-                
-              </div>
+          <p className="text-h4 text-grey-600 mt-12">Bag information</p>
+          <p className="text-lg text-grey-400 mt-3 ">
+            Each passenger is allowed one free carry-on bag and one personal
+            item. First checked bag for each passenger is also free. Second bag
+            check fees are waived for loyalty program members.{" "}
+            <span className="text-purpleBlue"> See the full bag policy.</span>
+          </p>
+          <div className="mt-9 text-h4 flex">
+            <div className="w-2/4">
+              <p className="text-grey-400">Passengers </p>
             </div>
+            <div>
+              <p className="text-grey-400">Checked bags</p>
+            </div>
+          </div>
         </div>
         {Array.from({ length: passengersCount }).map((_, index) => (
           <div key={index} className="">
-            
             <div className="mt-4 text-h4 flex items-center justify-start  ">
               <div className="w-2/4">
                 <p className="text-grey-600 mt-4">
                   <span>
                     {passengersData[index].firstName
                       ? passengersData[index].firstName
-                      : `Passenger ${index+1}`}{" "}
+                      : `Passenger ${index + 1}`}{" "}
                   </span>
                   <span>
                     {passengersData[index].lastName

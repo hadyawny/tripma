@@ -1,11 +1,14 @@
+'use client'
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function SearchItem({ flightInfo, onClick, isSelected }) {
-  const tripLength = calculateTripLength(
-    flightInfo.fromTime,
-    flightInfo.toTime
-  );
+  const [tripLength, setTripLength] = useState("");
+  useEffect(() => {
+    const length = calculateTripLength(flightInfo.fromTime, flightInfo.toTime);
+    setTripLength(length);
+  }, [flightInfo.fromTime, flightInfo.toTime]);
+
 
   return (
     <>

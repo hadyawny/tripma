@@ -264,8 +264,8 @@ export default function ReturnSeatspage() {
           </div>
           <div></div>
         </div>
-        <div className="bg-grey-100 w-full h-36 border-t-2 flex px-10 items-center">
-          <div className="mr-36">
+        <div className="bg-grey-100 w-full h-36 border-t-2 flex px-10 justify-between items-center">
+          <div className="">
             <p className=" text-grey-400">Passenger 1</p>
             <p className="text-lg text-grey-600">
               {passengerInfo
@@ -273,7 +273,7 @@ export default function ReturnSeatspage() {
                 : "N/A"}
             </p>
           </div>
-          <div className="mr-40">
+          <div className="">
             <p className=" text-grey-400">Seat number</p>
             <p className="text-lg text-grey-600">
               {" "}
@@ -282,6 +282,7 @@ export default function ReturnSeatspage() {
                 : selectedSeats.map((seat) => `${seat}`).join(", ")}
             </p>
           </div>
+          <div className="flex">
           <NavigationButton
             text={"Save and close"}
             borderColor={"border-purpleBlue"}
@@ -294,6 +295,7 @@ export default function ReturnSeatspage() {
             disabled={isSeatsBooked ? false : true}
             destination={"/payment"}
           />
+          </div>
         </div>
       </div>
     </div>

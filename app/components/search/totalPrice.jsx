@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import SelectedFlights from "./selectedFlights";
 import NavigationButton from "../navigationButton";
