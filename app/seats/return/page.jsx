@@ -77,7 +77,7 @@ export default function ReturnSeatspage() {
               {selectedDepartingFlight ? selectedDepartingFlight.toCity : "N/A"}
             </p>
           </div>
-          <div className="h-full pl-8 pr-28  bg-purpleBlue flex flex-col justify-center text-grey-100 ">
+          <div className="h-full pl-8 pr-28   flex flex-col justify-center text-grey-100 ">
             <p className="text-lg">
               <span>
                 {selectedDepartingFlight
@@ -95,7 +95,7 @@ export default function ReturnSeatspage() {
             <p>Departing</p>
           </div>
           {selectedReturningFlight && (
-            <div className="h-full pl-8   flex flex-col justify-center text-grey-100 relative">
+            <div className="h-full pl-8 flex-auto  flex flex-col justify-center bg-purpleBlue text-grey-100 relative">
               <p className="text-lg">
                 <span>{formatDate(selectedReturningFlight.departDay)} |</span>{" "}
                 <span>{selectedReturningFlight.fromTime}</span>

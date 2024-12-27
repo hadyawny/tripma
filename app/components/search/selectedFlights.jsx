@@ -1,19 +1,31 @@
+'use client'
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function SelectedFlights({
   departingFlightInfo,
   returningFlightInfo,
-  seatUpgrades=0
+  seatUpgrades = 0,
 }) {
   const departingFlightLength = calculateTripLength(
     departingFlightInfo.fromTime,
     departingFlightInfo.toTime
   );
 
-  const totalPrice = returningFlightInfo
-    ? departingFlightInfo.price + returningFlightInfo.price + (seatUpgrades * 199)
-    : departingFlightInfo.price + (seatUpgrades * 199);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    if (departingFlightInfo) {
+      const price = returningFlightInfo
+        ? departingFlightInfo.price +
+          returningFlightInfo.price +
+          seatUpgrades * 199
+        : departingFlightInfo.price + seatUpgrades * 199;
+
+      setTotalPrice(price);
+    }
+  }, [departingFlightInfo, returningFlightInfo, seatUpgrades]);
+
   const taxes = totalPrice * (24 / 100);
   const subtotal = totalPrice - taxes;
 
@@ -73,10 +85,12 @@ export default function SelectedFlights({
           </div>
         )}
       </div>
-      {seatUpgrades !==0 && <div className="mb-4">
-        <span className="mr-10">Seat upgrade</span>
-        <span>${(seatUpgrades*199).toFixed(2)}</span>
-      </div>}
+      {seatUpgrades !== 0 && (
+        <div className="mb-4">
+          <span className="mr-10">Seat upgrade</span>
+          <span>${(seatUpgrades * 199).toFixed(2)}</span>
+        </div>
+      )}
       <div>
         <span className="mr-10">Subtotal</span>
         <span>${subtotal.toFixed(2)}</span>
