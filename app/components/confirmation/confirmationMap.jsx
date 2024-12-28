@@ -1,21 +1,21 @@
 import Image from "next/image";
 import React from "react";
 
-export default function TripMap({ fromCity, toCity }) {
+export default function ConfirmationMap({ fromCity="", toCity="" }) {
   return (
-    <div className="mt-12 relative w-full max-w-[1070px] mx-auto">
+    <div className="relative w-full max-w-[756px] ">
       <Image
-        src="/map.png"
-        alt="trip map"
-        width={1070}
-        height={206}
-        className="object-contain"
+        src="/confirmationmap.png"
+        alt="map of trip"
+        width={756}
+        height={400}
+        
       />
       <span
         className="absolute  text-purpleDark text-sm font-bold"
         style={{
-          top: "60%",
-          left: "35%",
+          top: "45%",
+          left: "39%",
         }}
       >
         {toCity}
@@ -23,8 +23,8 @@ export default function TripMap({ fromCity, toCity }) {
       <span
         className="absolute  text-purpleDark text-sm font-bold"
         style={{
-          top: "58%",
-          left: "57%",
+          top: "45%",
+          left: "67%",
         }}
       >
         {fromCity}

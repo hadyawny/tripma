@@ -4,6 +4,8 @@ import { useGlobalContext } from "../context/store";
 import NavigationButton from "../components/navigationButton";
 import SelectedFlights from "../components/search/selectedFlights";
 import Image from "next/image";
+import ConfirmationMap from "../components/confirmation/confirmationMap";
+import HotelDealCard from "../components/confirmation/hotelDealCard";
 
 export default function ConfirmationPage() {
   const {
@@ -59,26 +61,27 @@ export default function ConfirmationPage() {
   }, [selectedSeatsDeparting, selectedSeatsReturning]);
 
   useEffect(() => {
-    if(selectedDepartingFlight){
-      const price =
-      selectedReturningFlight
+    if (selectedDepartingFlight) {
+      const price = selectedReturningFlight
         ? selectedDepartingFlight.price +
           selectedReturningFlight.price +
           bussinessClassSeatsCount * 199
         : selectedDepartingFlight.price + bussinessClassSeatsCount * 199;
 
-    setTotalPrice(price);
+      setTotalPrice(price);
     }
-
-    
-  }, [selectedDepartingFlight, selectedReturningFlight, bussinessClassSeatsCount]);
+  }, [
+    selectedDepartingFlight,
+    selectedReturningFlight,
+    bussinessClassSeatsCount,
+  ]);
 
   const taxes = totalPrice * (24 / 100);
   const subtotal = totalPrice - taxes;
 
   return (
-    <div className="flex mx-24 my-14">
-      <div className="w-3/5 flex flex-col items-start ">
+    <div className="flex mx-24 my-14 justify-between">
+      <div className="w-3/5 flex flex-col ">
         <div className="bg-lightGreen text-deepGreen border p-5 border-deepGreen rounded-lg w-[44rem] ">
           Your flight has been booked successfully! Your confirmation number is
           #381029404387
@@ -201,7 +204,34 @@ export default function ConfirmationPage() {
         )}
 
         {selectedDepartingFlight && (
-          <div className="w-[25rem] flex flex-col">
+          <div className="w-[25rem] flex flex-col text-lg text-grey-600">
+            <p className="text-h3 mb-6 mt-14">Price breakdown</p>
+            <div className="mb-3 flex justify-between">
+              <span className="mr-10">Departing Flight</span>
+              <span>
+                $
+                {(
+                  selectedDepartingFlight.price -
+                  (selectedDepartingFlight.price * 24) / 100
+                ).toFixed(2)}
+              </span>
+            </div>
+            {selectedReturningFlight && (
+              <div className="mb-3 flex justify-between">
+                <span className="mr-10">Arriving Flight</span>
+                <span>
+                  $
+                  {(
+                    selectedReturningFlight.price -
+                    (selectedReturningFlight.price * 24) / 100
+                  ).toFixed(2)}
+                </span>
+              </div>
+            )}
+            <div className="mb-3 flex justify-between">
+              <span className="mr-10">Baggage fees</span>
+              <span>$0</span>
+            </div>
             {bussinessClassSeatsCount !== 0 && (
               <div className="mb-3  flex justify-between">
                 <span className="mr-10">Seat upgrade (business)</span>
@@ -213,18 +243,137 @@ export default function ConfirmationPage() {
               <span>${subtotal.toFixed(2)}</span>
             </div>
             <div className="mb-3 flex justify-between">
-              <span className="mr-10">Taxes and Fees</span>
+              <span className="mr-10">Taxes (24%)</span>
               <span>${taxes.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="">Total</span>
+            <div className="flex justify-between text-grey-800 text-h4  border-t-2 border-b-2  py-2">
+              <span className="">Amount paid</span>
               <span>${totalPrice.toFixed(2)}</span>
             </div>
           </div>
         )}
+
+        <p className="text-h3 text-grey-600 mt-14 mb-6">Payment method</p>
+        <Image
+          src="/creditcardconfirmation.svg"
+          alt="credit card"
+          width={300}
+          height={188}
+        />
+        <p className="text-h3 text-grey-600 mt-14 mb-4">
+          Share your travel itinerary
+        </p>
+        <p className="text-lg text-grey-400 mb-6">
+          You can email your itinerary to anyone by entering their email address
+          here.
+        </p>
+        <input
+          type="email"
+          name="email"
+          className="border pl-3  py-2 mb-6 rounded border-grey-300 w-[25rem]"
+          placeholder="Email address"
+        />
+        <input
+          type="email"
+          name="email"
+          className="border pl-3  py-2 mb-6 rounded border-grey-300 w-[25rem]"
+          placeholder="Email address"
+        />
+        <input
+          type="email"
+          name="email"
+          className="border pl-3  py-2 mb-6 rounded border-grey-300 w-[25rem]"
+          placeholder="Email address"
+        />
+
+        <div className="flex gap-8">
+          <NavigationButton
+            text={"Email itinerary"}
+            color={"text-trueWhite"}
+            bgColor={"bg-purpleBlue"}
+          />
+          <NavigationButton
+            text={"Add Another"}
+            color={"text-purpleBlue"}
+            borderColor={"border-transparent"}
+          />
+        </div>
+        <p className="text-h3 text-grey-600 mt-14 mb-6">Flight Route</p>
+        <ConfirmationMap
+          fromCity={selectedDepartingFlight?.from}
+          toCity={selectedDepartingFlight?.to}
+        />
       </div>
 
-      <div className="w-2/5"></div>
+      <div className=" flex flex-col w-[25rem]">
+        <p className="text-h3 text-grey-600 mb-4">
+          Shop <span className="text-purpleBlue">hotels</span>
+        </p>
+        <p className="text-lg text-grey-400">
+          Tripma partners with thousands of hotels to get you the best deal.
+          Save up to 30% when you add a hotel to your trip.
+        </p>
+
+        <HotelDealCard
+          description={"Enjoy views of the garden from your room"}
+          imageSrc={"/confirmationshop1.png"}
+          price={439}
+          title={"Ryokan Japan"}
+        />
+        <HotelDealCard
+          description={"Japanese ryokan with private onsen bath"}
+          imageSrc={"/confirmationshop2.png"}
+          price={529}
+          title={"Bessho SASA"}
+        />
+        <HotelDealCard
+          description={"Modern hotel in the heart of Osaka"}
+          imageSrc={"/confirmationshop3.png"}
+          price={139}
+          title={"HOTEL THE FLAG 大阪市"}
+        />
+        <HotelDealCard
+          description={"A convenient capsule hotel at Shinjuku station"}
+          imageSrc={"/confirmationshop4.png"}
+          price={59}
+          title={"9 Hours Shinjuku"}
+        />
+        <div className="flex justify-center mb-16 mt-2">
+        <NavigationButton
+          text={"Shop all hotels"}
+          borderColor={"border-purpleBlue"}
+          color={"text-purpleBlue"}
+        />
+        </div>
+        
+        <p className="text-h3 text-grey-600 mb-4">
+          Find unique <span className="text-purpleBlue">experiences</span>
+        </p>
+        <p className="text-lg text-grey-400">
+          Find events and authentic cultrual experiences available exclusively
+          to Tripma users.
+        </p>
+
+        <HotelDealCard
+          description={"Wear the national dress of Japan around the city"}
+          imageSrc={"/confirmationshop5.png"}
+          price={89}
+          title={"Nihon Kimono"}
+        />
+        <HotelDealCard
+          description={"A modern sensory experience of light and sound"}
+          imageSrc={"/confirmationshop6.png"}
+          price={39}
+          title={"teamLab Borderless"}
+        />
+        <div className="flex justify-center mb-16 mt-2">
+        <NavigationButton
+          text={"View all experiences"}
+          borderColor={"border-purpleBlue"}
+          color={"text-purpleBlue"}
+        />
+        </div>
+      </div>
     </div>
   );
 }
