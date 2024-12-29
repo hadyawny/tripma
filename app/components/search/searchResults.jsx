@@ -1,7 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import SearchBar from "../hero/searchBar";
-import { flights } from "@/app/(data)/data";
 import SearchedFlights from "./searchedFlights";
 import TripMap from "./TripMap";
 import PriceStatistics from "./priceStatistics";
@@ -20,6 +19,8 @@ export default function SearchResults({
   const [selectedDepartingFlight, setSelectedDepartingFlight] = useState(null);
   const [selectedReturningFlight, setSelectedReturningFlight] = useState(null);
   const [filteredReturningResults, setFilteredReturningResults] = useState([]);
+  const [filteredDepartingResults, setFilteredDepartingResults] = useState([]);
+
 
   async function onFlightSelect(item) {
     if (!selectedDepartingFlight) {
@@ -34,29 +35,33 @@ export default function SearchResults({
   const formattedStartDate = startDateValue ? formatDate(startDateValue) : null;
   const formattedEndDate = endDateValue ? formatDate(endDateValue) : null;
 
-  const filteredDepatingResults = flights.filter((flight) => {
-    const isFromMatch = flight.from === fromValue;
-    const isToMatch = flight.to === toValue;
-    const isStartDateMatch =
-      formattedStartDate && flight.departDay === formattedStartDate;
+  // const filteredDepartingResults = flights.filter((flight) => {
+  //   const isFromMatch = flight.from === fromValue;
+  //   const isToMatch = flight.to === toValue;
+  //   const isStartDateMatch =
+  //     formattedStartDate && flight.departDay === formattedStartDate;
 
-    return isFromMatch && isToMatch && isStartDateMatch;
-  });
+  //   return isFromMatch && isToMatch && isStartDateMatch;
+  // });
 
   useEffect(() => {
-    if (formattedEndDate) {
-      const results = flights.filter((flight) => {
-        const isFromMatch = flight.from === toValue;
-        const isToMatch = flight.to === fromValue;
-        const isStartDateMatch =
-          formattedEndDate && flight.departDay == formattedEndDate;
-
-        return isFromMatch && isToMatch && isStartDateMatch;
-      });
-
-      setFilteredReturningResults(results);
+    if (formattedStartDate) {
+      async function fetchDepartingFlights() {
+        const res = await fetch(`/api/flight?from=${fromValue}&to=${toValue}&departDate=${formattedStartDate}`);
+        const data = await res.json();
+        setFilteredDepartingResults(data);
     }
-  }, [formattedEndDate, toValue, fromValue]);
+    fetchDepartingFlights();
+    }
+    if (formattedEndDate) {
+      async function fetchDepartingFlights() {
+        const res = await fetch(`/api/flight?from=${toValue}&to=${fromValue}&departDate=${formattedEndDate}`);
+        const data = await res.json();
+        setFilteredReturningResults(data);
+    }
+    fetchDepartingFlights();
+    }
+  }, [formattedStartDate,formattedEndDate, toValue, fromValue]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -148,7 +153,7 @@ export default function SearchResults({
             searchResults={
               selectedDepartingFlight && isRoundTripValue
                 ? filteredReturningResults
-                : filteredDepatingResults
+                : filteredDepartingResults
             }
             onFlightSelect={onFlightSelect}
           />

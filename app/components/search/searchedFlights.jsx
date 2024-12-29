@@ -8,7 +8,7 @@ export default function SearchedFlights({ searchResults ,onFlightSelect }) {
 
 
   const handleFlightSelect = (flight) => {
-    setSelectedFlightId(flight.id);  
+    setSelectedFlightId(flight._id);  
     onFlightSelect(flight); 
   };
   
@@ -17,10 +17,10 @@ export default function SearchedFlights({ searchResults ,onFlightSelect }) {
     <div className="w-full border border-grey-400 rounded-xl h-[33rem] mt-4 p-4 overflow-hidden">
       {searchResults && searchResults.length > 0 ? (
         searchResults.map((item) => (
-            <SearchItem key={item.id} flightInfo={item} onClick={() => {
+            <SearchItem key={item._id} flightInfo={item} onClick={() => {
               handleFlightSelect(item)
             }}
-            isSelected={selectedFlightId === item.id}
+            isSelected={selectedFlightId === item._id}
             />
         ))
       ) : (

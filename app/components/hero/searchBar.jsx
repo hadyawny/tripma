@@ -3,9 +3,8 @@
 import DropDownMenu from "../dropDownMenu";
 import TripDatePicker from "./tripDatePicker";
 import Passengers from "./passengers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { airports } from "@/app/(data)/data";
 export default function SearchBar({
   fromValue,
   toValue,
@@ -17,6 +16,18 @@ export default function SearchBar({
 }) {
 
 
+  const [airports, setAirports] = useState([]);
+
+  useEffect(() => {
+      async function fetchAirports() {
+          const res = await fetch('/api/airport');
+          const data = await res.json();
+          setAirports(data);
+      }
+      fetchAirports();
+  }, []);
+
+  
   const [from, setFrom] = useState(fromValue || null);
   const [to, setTo] = useState(toValue || null);
   const [isRoundTrip, setIsRoundTrip] = useState(isRoundTripValue === undefined ? true : isRoundTripValue);

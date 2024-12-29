@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../context/store";
 import NavigationButton from "../components/navigationButton";
-import SelectedFlights from "../components/search/selectedFlights";
 import Image from "next/image";
 import ConfirmationMap from "../components/confirmation/confirmationMap";
 import HotelDealCard from "../components/confirmation/hotelDealCard";
@@ -101,11 +100,11 @@ export default function ConfirmationPage() {
         {selectedDepartingFlight && (
           <div>
             <p className="text-h4 text-grey-600 mt-6">
-              Departing February 25th, 2021
+            Departing {formatDate(selectedDepartingFlight.departDay)}
             </p>
 
             <div
-              className={`px-4 flex mt-4  text-grey-900 cursor-pointer border border-grey-200 rounded-lg w-[50rem]`}
+              className={`px-4 flex mt-4  text-grey-900  border border-grey-200 rounded-lg w-[50rem]`}
             >
               <Image
                 src={selectedDepartingFlight.airlineLogo}
@@ -146,7 +145,8 @@ export default function ConfirmationPage() {
               </div>
             </div>
             <p className="text-grey-400 mt-3">
-              Seat 9F (economy, window), 1 checked bag
+              {selectedSeatsDeparting.length > 1 ? "Seats" : "Seat"} {selectedSeatsDeparting.join("-")} 
+              
             </p>
           </div>
         )}
@@ -154,10 +154,10 @@ export default function ConfirmationPage() {
         {selectedReturningFlight && (
           <div>
             <p className="text-h4 text-grey-600 mt-10">
-              Arriving March 21st, 2021{" "}
+              Arriving {formatDate(selectedReturningFlight.departDay)}
             </p>
             <div
-              className={`px-4 flex mt-4  text-grey-900 cursor-pointer border border-grey-200 rounded-lg w-[50rem]`}
+              className={`px-4 flex mt-4  text-grey-900 border border-grey-200 rounded-lg w-[50rem]`}
             >
               <Image
                 src={selectedReturningFlight.airlineLogo}
@@ -198,7 +198,7 @@ export default function ConfirmationPage() {
               </div>
             </div>
             <p className="text-grey-400 mt-3">
-              Seat 9F (economy, window), 1 checked bag
+            {selectedSeatsReturning.length > 1 ? "Seats" : "Seat"} {selectedSeatsReturning.join("-")} 
             </p>
           </div>
         )}
@@ -404,3 +404,26 @@ function calculateTripLength(fromTime, toTime) {
 
   return `${hours}h ${minutes}m`;
 }
+
+
+function formatDate(dateString) {
+  const date = new Date(dateString?.split("-").reverse().join("-"));
+
+  const month = date.toLocaleString("default", { month: "long" });
+
+  const day = date.getDate();
+
+  let suffix = "th";
+  if (day % 10 === 1 && day !== 11) {
+    suffix = "st";
+  } else if (day % 10 === 2 && day !== 12) {
+    suffix = "nd";
+  } else if (day % 10 === 3 && day !== 13) {
+    suffix = "rd";
+  }
+
+  const year = date.getFullYear();
+
+  return `${month} ${day}${suffix}, ${year}`;
+}
+

@@ -26,7 +26,7 @@ export default function DropDownMenu({ title, icon, data ,onItemsChange}) {
         className="absolute left-0 mt-2 bg-white border border-grey-200 shadow-lg rounded-md max-h-56 overflow-y-auto w-[var(--button-width)] p-4"
       >
         {data?.map((item) => (
-          <MenuItem key={item.id}>
+          <MenuItem key={item._id}>
             {() => (
               <p
                 onClick={() => {
