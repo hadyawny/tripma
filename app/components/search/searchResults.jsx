@@ -6,6 +6,7 @@ import TripMap from "./TripMap";
 import PriceStatistics from "./priceStatistics";
 import Image from "next/image";
 import TotalPrice from "./totalPrice";
+import FilterDropDownMenu from "./filterDropDownMenu";
 
 export default function SearchResults({
   fromValue,
@@ -20,7 +21,8 @@ export default function SearchResults({
   const [selectedReturningFlight, setSelectedReturningFlight] = useState(null);
   const [filteredReturningResults, setFilteredReturningResults] = useState([]);
   const [filteredDepartingResults, setFilteredDepartingResults] = useState([]);
-
+  const [maxPrice, setMaxPrice] = useState(null);
+  const [airLine, setAirline] = useState(null);
 
   async function onFlightSelect(item) {
     if (!selectedDepartingFlight) {
@@ -35,156 +37,186 @@ export default function SearchResults({
   const formattedStartDate = startDateValue ? formatDate(startDateValue) : null;
   const formattedEndDate = endDateValue ? formatDate(endDateValue) : null;
 
-  // const filteredDepartingResults = flights.filter((flight) => {
-  //   const isFromMatch = flight.from === fromValue;
-  //   const isToMatch = flight.to === toValue;
-  //   const isStartDateMatch =
-  //     formattedStartDate && flight.departDay === formattedStartDate;
+  function onMaxPriceFilter(price) {
+    if (price.item == "All") {
+      setMaxPrice(null);
+      return;
+    }
 
-  //   return isFromMatch && isToMatch && isStartDateMatch;
-  // });
+    const maxPrice = parseInt(price.item, 10);
+
+    setMaxPrice(maxPrice);
+  }
+  function onAirlineFilter(airlineChoosen) {
+    if (airlineChoosen.item == "All") {
+      setAirline(null);
+      return;
+    }
+    setAirline(airlineChoosen.item);
+  }
 
   useEffect(() => {
     if (formattedStartDate) {
       async function fetchDepartingFlights() {
-        const res = await fetch(`/api/flight?from=${fromValue}&to=${toValue}&departDate=${formattedStartDate}`);
+        let url = `/api/flight?from=${fromValue}&to=${toValue}&departDate=${formattedStartDate}`;
+        if (maxPrice && !airLine) {
+          url += `&maxPrice=${maxPrice}`;
+        } else if (airLine && !maxPrice) {
+          url += `&airline=${airLine}`;
+        } else if (airLine && maxPrice) {
+          url += `&airline=${airLine}` + `&maxPrice=${maxPrice}`;
+        }
+
+        const res = await fetch(url);
         const data = await res.json();
         setFilteredDepartingResults(data);
-    }
-    fetchDepartingFlights();
+      }
+      fetchDepartingFlights();
     }
     if (formattedEndDate) {
       async function fetchDepartingFlights() {
-        const res = await fetch(`/api/flight?from=${toValue}&to=${fromValue}&departDate=${formattedEndDate}`);
+        let url = `/api/flight?from=${toValue}&to=${fromValue}&departDate=${formattedEndDate}`;
+        if (maxPrice) {
+          url += `&maxPrice=${maxPrice}`;
+        }
+        const res = await fetch(url);
         const data = await res.json();
         setFilteredReturningResults(data);
+      }
+      fetchDepartingFlights();
     }
-    fetchDepartingFlights();
-    }
-  }, [formattedStartDate,formattedEndDate, toValue, fromValue]);
+  }, [
+    formattedStartDate,
+    formattedEndDate,
+    toValue,
+    fromValue,
+    maxPrice,
+    airLine,
+  ]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-    <div className="mx-16 my-10">
-      <SearchBar
-        fromValue={fromValue}
-        toValue={toValue}
-        startDateValue={startDateValue}
-        endDateValue={endDateValue}
-        adultsValue={adultsValue}
-        minorsValue={minorsValue}
-        isRoundTripValue={isRoundTripValue}
-      />
-      <div className="my-5 flex">
-        <button className=" text-grey-900 px-5 py-2 mr-5  border rounded-lg border-grey-200 flex justify-center items-center">
-          Max price
-          <Image
-            src="/arrowdown.png"
-            alt="airline logo"
-            width={8}
-            height={4}
-            className="ml-2 object-contain"
+      <div className="mx-16 my-10">
+        <SearchBar
+          fromValue={fromValue}
+          toValue={toValue}
+          startDateValue={startDateValue}
+          endDateValue={endDateValue}
+          adultsValue={adultsValue}
+          minorsValue={minorsValue}
+          isRoundTripValue={isRoundTripValue}
+        />
+        <div className="my-5 flex">
+          <FilterDropDownMenu
+            title={"Max Price"}
+            onItemsChange={onMaxPriceFilter}
+            data={["All", "100", "200", "300", "400"]}
           />
-        </button>
-        <button className=" text-grey-900 px-5 py-2 mr-5 border rounded-lg border-grey-200 flex justify-center items-center">
-          Shops
-          <Image
-            src="/arrowdown.png"
-            alt="airline logo"
-            width={8}
-            height={4}
-            className="ml-2 object-contain"
+          <button className=" text-grey-900 px-5 py-2 mr-5 border rounded-lg border-grey-200 flex justify-center items-center">
+            Shops
+            <Image
+              src="/arrowdown.png"
+              alt="airline logo"
+              width={8}
+              height={4}
+              className="ml-2 object-contain"
+            />
+          </button>
+          <button className=" text-grey-900 px-5 py-2 mr-5  border rounded-lg border-grey-200 flex justify-center items-center">
+            Times
+            <Image
+              src="/arrowdown.png"
+              alt="airline logo"
+              width={8}
+              height={4}
+              className="ml-2 object-contain"
+            />
+          </button>
+          <FilterDropDownMenu
+            title={"AirLine"}
+            onItemsChange={onAirlineFilter}
+            data={[
+              "All",
+              "Delta Airlines",
+              "American Airlines",
+              "Spirit Airlines",
+              "United Airlines",
+            ]}
           />
-        </button>
-        <button className=" text-grey-900 px-5 py-2 mr-5  border rounded-lg border-grey-200 flex justify-center items-center">
-          Times
-          <Image
-            src="/arrowdown.png"
-            alt="airline logo"
-            width={8}
-            height={4}
-            className="ml-2 object-contain"
-          />
-        </button>
-        <button className=" text-grey-900 px-5 py-2 mr-5  border rounded-lg border-grey-200 flex justify-center items-center">
-          Airlines
-          <Image
-            src="/arrowdown.png"
-            alt="airline logo"
-            width={8}
-            height={4}
-            className="ml-2 object-contain"
-          />
-        </button>
-        <button className=" text-grey-900 px-5 py-2 mr-5  border rounded-lg border-grey-200 flex justify-center items-center">
-          Seat class
-          <Image
-            src="/arrowdown.png"
-            alt="airline logo"
-            width={8}
-            height={4}
-            className="ml-2 object-contain"
-          />
-        </button>
-        <button className=" text-grey-900 px-5 py-2 mr-5  border rounded-lg border-grey-200 flex justify-center items-center">
-          More
-          <Image
-            src="/arrowdown.png"
-            alt="airline logo"
-            width={8}
-            height={4}
-            className="ml-2 object-contain"
-          />
-        </button>
-      </div>
 
-      <div className="mt-12 flex ">
-        <div className="w-3.9/5  mr-20">
-          <p className="text-h4 text-grey-600">
-            Choose a{" "}
-            <span className="text-purpleBlue">
-              {selectedDepartingFlight && isRoundTripValue
-                ? "returning"
-                : "departing"}
-            </span>{" "}
-            flight
-          </p>
-          <SearchedFlights
-            searchResults={
-              selectedDepartingFlight && isRoundTripValue
-                ? filteredReturningResults
-                : filteredDepartingResults
-            }
-            onFlightSelect={onFlightSelect}
-          />
-          <div className="flex  mt-6 justify-end">
-            <button className="text-lg text-purpleBlue px-5 py-3 border rounded-lg border-purpleBlue">
-              Show all flights
-            </button>
-          </div>
-
-          <TripMap
-            fromCity={
-              selectedDepartingFlight && isRoundTripValue ? toValue : fromValue
-            }
-            toCity={
-              selectedDepartingFlight && isRoundTripValue ? fromValue : toValue
-            }
-          />
+          <button className=" text-grey-900 px-5 py-2 mr-5  border rounded-lg border-grey-200 flex justify-center items-center">
+            Seat class
+            <Image
+              src="/arrowdown.png"
+              alt="airline logo"
+              width={8}
+              height={4}
+              className="ml-2 object-contain"
+            />
+          </button>
+          <button className=" text-grey-900 px-5 py-2 mr-5  border rounded-lg border-grey-200 flex justify-center items-center">
+            More
+            <Image
+              src="/arrowdown.png"
+              alt="airline logo"
+              width={8}
+              height={4}
+              className="ml-2 object-contain"
+            />
+          </button>
         </div>
 
-        {!selectedDepartingFlight && <PriceStatistics />}
-        {selectedDepartingFlight && (
-          <TotalPrice
-            selectedDepartingFlight={selectedDepartingFlight}
-            selectedReturningFlight={selectedReturningFlight}
-            isRoundTrip={isRoundTripValue}
-            adults={adultsValue}
-            minors={minorsValue}
-          />
-        )}
+        <div className="mt-5 flex ">
+          <div className="w-3.9/5  mr-20">
+            <p className="text-h4 text-grey-600">
+              Choose a{" "}
+              <span className="text-purpleBlue">
+                {selectedDepartingFlight && isRoundTripValue
+                  ? "returning"
+                  : "departing"}
+              </span>{" "}
+              flight
+            </p>
+            <SearchedFlights
+              searchResults={
+                selectedDepartingFlight && isRoundTripValue
+                  ? filteredReturningResults
+                  : filteredDepartingResults
+              }
+              onFlightSelect={onFlightSelect}
+            />
+            <div className="flex  mt-6 justify-end">
+              <button className="text-lg text-purpleBlue px-5 py-3 border rounded-lg border-purpleBlue">
+                Show all flights
+              </button>
+            </div>
+
+            <TripMap
+              fromCity={
+                selectedDepartingFlight && isRoundTripValue
+                  ? toValue
+                  : fromValue
+              }
+              toCity={
+                selectedDepartingFlight && isRoundTripValue
+                  ? fromValue
+                  : toValue
+              }
+            />
+          </div>
+
+          {!selectedDepartingFlight && <PriceStatistics />}
+          {selectedDepartingFlight && (
+            <TotalPrice
+              selectedDepartingFlight={selectedDepartingFlight}
+              selectedReturningFlight={selectedReturningFlight}
+              isRoundTrip={isRoundTripValue}
+              adults={adultsValue}
+              minors={minorsValue}
+            />
+          )}
+        </div>
       </div>
-    </div>
     </Suspense>
   );
 }

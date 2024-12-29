@@ -8,6 +8,9 @@ import SearchResults from "../components/search/searchResults";
 function SearchContent() {
   const searchParams = useSearchParams();
   const fromAirport = searchParams.get("from");
+  const fromCity = searchParams.get("fromCity");
+  const toCity = searchParams.get("toCity");
+
   const toAirport = searchParams.get("to");
   const depatDate = searchParams.get("startDate");
   const arriveDate = searchParams.get("endDate") || null;
@@ -26,8 +29,8 @@ function SearchContent() {
         minorsValue={minors}
         isRoundTripValue={isRoundTrip}
       />
-      <PlacesToStaySearch city={toAirport} />
-      <FlightDealsSearch city={fromAirport} />
+      <PlacesToStaySearch city={toCity} />
+      <FlightDealsSearch city={fromCity} />
     </div>
   );
 }

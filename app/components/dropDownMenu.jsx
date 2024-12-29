@@ -31,7 +31,7 @@ export default function DropDownMenu({ title, icon, data ,onItemsChange}) {
               <p
                 onClick={() => {
                   setSelectedTitle(item.code);
-                  onItemsChange({ item: item.code });
+                  onItemsChange({ item });
                 }}
                 className={`block px-4 py-2 
                    "bg-blue-100" 

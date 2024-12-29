@@ -13,6 +13,8 @@ export default function SearchBar({
   adultsValue,
   minorsValue,
   isRoundTripValue,
+  fromCityValue,
+  toCityValue
 }) {
 
 
@@ -30,6 +32,8 @@ export default function SearchBar({
   
   const [from, setFrom] = useState(fromValue || null);
   const [to, setTo] = useState(toValue || null);
+  const [fromCity, setFromCity] = useState(fromCityValue || null);
+  const [toCity, setToCity] = useState(toCityValue || null);
   const [isRoundTrip, setIsRoundTrip] = useState(isRoundTripValue === undefined ? true : isRoundTripValue);
   const [startDate, setStartDate] = useState(startDateValue || null);
   const [endDate, setEndDate] = useState(endDateValue || null);
@@ -50,10 +54,13 @@ export default function SearchBar({
     setMinors(minors);
   }
   function handleFromChange(item) {
-    setFrom(item.item);
+    
+    setFromCity(item.item.city)    
+    setFrom(item.item.code);
   }
   function handleToChange(item) {
-    setTo(item.item);
+    setToCity(item.item.city)
+    setTo(item.item.code);
   }
 
   function handleSearchSubmit(e) {
@@ -74,7 +81,12 @@ export default function SearchBar({
       adults: adults,
       minors: minors,
       isRoundTrip: isRoundTrip? "true": "false",
+      fromCity: fromCity,
+      toCity: toCity,
     }).toString();
+
+    console.log(queryParams);
+    
     // Navigate to the search page with the query parameters
     router.push(`/search?${queryParams}`);
   }

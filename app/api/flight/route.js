@@ -23,14 +23,18 @@ export async function GET(req) {
     if (searchParams.has('departDay')) {
       filters.departDay = searchParams.get('departDay');
     }
+
+     if (searchParams.has('airline')) {
+    const airline = searchParams.get('airline').replace(/\s+/g, ' ').trim();  // Normalize spaces
+    filters.airline = { $regex: new RegExp(`^${airline}$`, 'i') };  // Case-insensitive match, ensure exact match
+    console.log("Airline Filter Applied:", filters.airline);
+  }
   
-    if (searchParams.has('price_min') && searchParams.has('price_max')) {
-      const priceMin = parseFloat(searchParams.get('price_min'));
-      const priceMax = parseFloat(searchParams.get('price_max'));
-      filters.price = { $gte: priceMin, $lte: priceMax };
+    if (searchParams.has('maxPrice')) {
+      const maxPrice = searchParams.get('maxPrice');
+      filters.price = { $lte: parseInt(maxPrice, 10) };
     }
-
-
+    
 
   try {
     const flights = await flightModel.find(filters);
