@@ -19,8 +19,8 @@ export default function SearchResults({
 }) {
   const [selectedDepartingFlight, setSelectedDepartingFlight] = useState(null);
   const [selectedReturningFlight, setSelectedReturningFlight] = useState(null);
-  const [filteredReturningResults, setFilteredReturningResults] = useState([]);
-  const [filteredDepartingResults, setFilteredDepartingResults] = useState([]);
+  const [filteredReturningResults, setFilteredReturningResults] = useState(null);
+  const [filteredDepartingResults, setFilteredDepartingResults] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [airLine, setAirline] = useState(null);
 
