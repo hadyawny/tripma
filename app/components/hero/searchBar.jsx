@@ -87,8 +87,8 @@ export default function SearchBar({
 
     console.log(queryParams);
     
-    // Navigate to the search page with the query parameters
-    router.push(`/search?${queryParams}`);
+    // router.push(`/search?${queryParams}`);
+    window.location.assign(`/search?${queryParams}`);
   }
 
   return (
