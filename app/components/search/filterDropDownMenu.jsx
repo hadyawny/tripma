@@ -14,7 +14,7 @@ export default function FilterDropDownMenu({
     <Menu as="div" className="relative inline-block text-left">
       <MenuButton
         as="div"
-        className="text-grey-900 px-5 py-2 mr-5 w-36 h-16 border rounded-lg border-grey-200 flex justify-center items-center"
+        className="text-grey-900 px-5 py-2 mr-5 w-36 h-16 border cursor-pointer rounded-lg border-grey-200 flex justify-center items-center"
       >
         {selectedTitle == "All" ? title : selectedTitle}
         <Image
