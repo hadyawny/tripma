@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from 'bcryptjs';
 import { userModel } from "../register/user.model";
 import { dbConnect } from "../lib/db";
 

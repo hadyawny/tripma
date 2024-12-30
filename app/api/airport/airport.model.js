@@ -14,5 +14,5 @@ const schema = new mongoose.Schema({
   },
 });
 
-export const airportModel = mongoose.model("airport", schema);
+export const airportModel = mongoose.models.airport ||mongoose.model("airport", schema);
 

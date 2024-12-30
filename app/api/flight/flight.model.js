@@ -55,5 +55,5 @@ const schema = new mongoose.Schema({
   },
 });
 
-export const flightModel = mongoose.model("flight", schema);
+export const flightModel = mongoose.models.flight || mongoose.model("flight", schema);
 

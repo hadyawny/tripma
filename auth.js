@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-
+import Credentials from "next-auth/providers/credentials";
 export const {
   handlers: { GET, POST },
   auth,
@@ -8,6 +8,37 @@ export const {
   signOut,
 } = NextAuth({
   providers: [
+    Credentials({
+      credentials:{
+        email:{label:"email",type:"email",placeholder:"Email"},
+        password:{label:"password",type:"text",placeholder:"password"}
+      },
+      async authorize(credentials){
+          const {email,password} = credentials;
+
+          if (!email || !password){
+            return null;
+          }
+
+          const res = await fetch(
+            "http://localhost:3001/api/signin",
+            {
+              method: "POST",
+              body: JSON.stringify(credentials),
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          const user = await res.json();
+          console.log(user);
+          
+           if (res.ok && user) {
+            return user;
+          }
+
+          return null;
+
+      }
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,

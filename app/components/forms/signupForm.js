@@ -33,7 +33,7 @@ export default function SignupForm() {
           type="email"
           name="email"
           placeholder="Email"
-          required
+          
           defaultValue={email}
           className="w-full p-2 mb-1 border border-gray-300 rounded"
         />
@@ -44,7 +44,7 @@ export default function SignupForm() {
         <input
           type="password"
           name="password"
-          required
+          
           defaultValue={password}
           placeholder="Password"
           className="w-full p-2 mb-1 border border-gray-300 rounded"
