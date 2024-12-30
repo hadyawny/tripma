@@ -1,17 +1,35 @@
 import Image from 'next/image'
 import React from 'react'
+import { signIn } from '@/auth'
 
 export default function SigninForm() {
+    const handleGoogleSignIn = () => {
+        signIn("google"); // Triggers Google login
+      };
+    
+      const handleEmailPasswordSignIn = async (e) => {
+        e.preventDefault();
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+    
+        signIn("credentials", {
+          email,
+          password,
+          callbackUrl: "/", // Redirect to the homepage after successful sign-in
+        });
+      };
   return (
     <div>
-      <form>
+      <form onSubmit={handleEmailPasswordSignIn}>
                 <input
                   type="email"
+                  name='email'
                   placeholder="Email"
                   className="w-full p-2 mb-4 border border-gray-300 rounded"
                 />
                 <input
                   type="password"
+                  name='password'
                   placeholder="Password"
                   className="w-full p-2 mb-4 border border-gray-300 rounded"
                 />
@@ -28,7 +46,7 @@ export default function SigninForm() {
                   
                 </div>
                 <div className="flex flex-col items-center mt-4">
-                <button className="flex  border border-purpleBlue rounded-lg px-5 py-3  w-full items-center justify-center text-purpleBlue text-lg">
+                <button onClick={handleGoogleSignIn} className="flex  border border-purpleBlue rounded-lg px-5 py-3  w-full items-center justify-center text-purpleBlue text-lg">
                   <Image
                     src="/googleicon.png"
                     alt="google logo"
