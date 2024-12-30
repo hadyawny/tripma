@@ -19,15 +19,6 @@ export default function SigninForm() {
   );
   const { email, password } = formState.data || {};
 
-  useEffect(() => {
-    console.log(formState.message);
-    if (formState.message === "signin successful!") {
-     window.location.assign(`/`);
-    }
-  }, [formState]);
-
-
-  
   return (
     <div>
       <form action={formAction}>

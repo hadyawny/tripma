@@ -15,41 +15,35 @@ const initialState = {
 };
 
 export default function SignupForm() {
-  const [formState, formAction] = React.useActionState(userSignUp, initialState);
+  const [formState, formAction] = React.useActionState(
+    userSignUp,
+    initialState
+  );
 
   const { email, password, terms } = formState.data || {};
-  useEffect(() => {
-    console.log(formState.message);
-    if (formState.message === "Signup successful!") {
-     window.location.assign(`/`);
-    }
-  }, [formState]);
 
   return (
     <div>
       <form action={formAction}>
         <div className="mb-3 w-full">
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          
-          defaultValue={email}
-          className="w-full p-2 mb-1 border border-gray-300 rounded"
-        />
-        <ZodError errorMsg={formState?.zodErrors?.email} />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            defaultValue={email}
+            className="w-full p-2 mb-1 border border-gray-300 rounded"
+          />
+          <ZodError errorMsg={formState?.zodErrors?.email} />
         </div>
         <div className="mb-3 w-[55rem]  ">
-
-        <input
-          type="password"
-          name="password"
-          
-          defaultValue={password}
-          placeholder="Password"
-          className="w-full p-2 mb-1 border border-gray-300 rounded"
-        />
-        <ZodError errorMsg={formState?.zodErrors?.password} />
+          <input
+            type="password"
+            name="password"
+            defaultValue={password}
+            placeholder="Password"
+            className="w-full p-2 mb-1 border border-gray-300 rounded"
+          />
+          <ZodError errorMsg={formState?.zodErrors?.password} />
         </div>
         <input type="checkbox" name="terms" defaultValue={terms} id="terms" />
         <label htmlFor="terms" className="ml-2  text-grey-600">

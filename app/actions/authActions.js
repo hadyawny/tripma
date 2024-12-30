@@ -1,6 +1,7 @@
 "use server";
 
 import { signIn, signOut } from "@/auth";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 const signupSchema = z.object({
@@ -77,9 +78,7 @@ export async function userSignUp(prevState, formData) {
           password,
           redirect: false,
       });
-        // Redirect to a success page or dashboard
-        return { ...prevState, zodErrors: null, message: "Signup successful!" };
-      } else {
+    } else {
         const error = await response.json();
 
         return { error: error.message || "Signup failed." };
@@ -115,18 +114,30 @@ export async function userSignin(prevState, formData) {
     }
 
     try {
-      console.log("validate",{email, password});
+      const response = await fetch("http://localhost:3001/api/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      
+      if (response.ok) {
+        const data = await response.json();
         await signIn("credentials", {
-            email,
-            password,
-            redirect: false,
-        });
-      
+          email,
+          password,
+          redirect: false,
+            
+
+      });
+    } else {
+        const error = await response.json();
+
+        return { error: error.message || "signin failed." };
+      }
     } catch (err) {
-        console.log(err);
-      throw new Error(err);
+      return { error: "An error occurred during signup. Please try again." };
     }
   }
 }
