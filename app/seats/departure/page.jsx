@@ -310,6 +310,7 @@ export default function Seatspage() {
             <NavigationButton
               text={"Save and close"}
               borderColor={"border-purpleBlue"}
+              destination={"/"}
               color={"text-purpleBlue mr-5"}
             />
             <NavigationButton

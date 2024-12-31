@@ -307,6 +307,7 @@ export default function ReturnSeatspage() {
           <div className="flex">
             <NavigationButton
               text={"Save and close"}
+              destination={"/"}
               borderColor={"border-purpleBlue"}
               color={"text-purpleBlue mr-5"}
             />

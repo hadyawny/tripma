@@ -408,6 +408,7 @@ export default function PassengerPage() {
         <div className="mt-20 flex gap-10">
           <NavigationButton
             text={"Save and close"}
+            destination={"/"}
             bgColor={"text-purpleBlue"}
             borderColor={"border-purpleBlue"}
           />

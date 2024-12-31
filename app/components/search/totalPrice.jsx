@@ -60,7 +60,7 @@ export default function TotalPrice({
 
         {isRoundTrip && !selectedReturningFlight ? (
           <button
-            className={`text-lg text-grey-400 bg-disabledBg  border-purpleBlue px-5 py-3 border rounded-lg `}
+            className={`text-lg text-grey-400 text-purpleBlue  border-purpleBlue px-5 py-3 border rounded-lg `}
             type="button"
             onClick={handleSaveAndClose}
           >
