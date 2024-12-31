@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingCircle from "../components/loadingCircle";
+import { z } from "zod";
 
 export default function PassengerPage() {
   const {
@@ -49,6 +50,31 @@ export default function PassengerPage() {
       redressNumber: "",
     }))
   );
+  const passengerSchema = z.object({
+    firstName: z.string().min(1, "First name is required"),
+    lastName: z.string().min(1, "Last name is required"),
+    dateOfBirth: z.string().min(1),
+    email: z.string().email("Invalid email format").min(1, "Email is required"),
+    phoneNumber: z.string().min(1, "Phone number is required"),
+    emergencyFirstName: z.string().min(1, "Emergency first name is required"),
+    emergencyLastName: z.string().min(1, "Emergency last name is required"),
+    emergencyEmail: z
+      .string()
+      .email("Invalid emergency email format")
+      .min(1, "Emergency email is required"),
+    emergencyPhoneNumber: z
+      .string()
+      .min(1, "Emergency phone number is required"),
+    travellerNumber: z.string().min(1, "Traveller number is required"),
+    bags: z.number().min(1),
+    middleName: z.string().optional().nullable(),
+    suffix: z.string().optional().nullable(),
+    redressNumber: z.string().optional().nullable(),
+  });
+
+  // Define validation for a list of passengers
+  const passengerListSchema = z.array(passengerSchema);
+
 
   const [bags, setBags] = useState(Array(passengersCount).fill(1));
   const [isFormValid, setIsFormValid] = useState(false);
@@ -85,13 +111,18 @@ export default function PassengerPage() {
   }, [passengersData]);
 
   const savePassengerData = () => {
-    setPassengerInfo(
-      passengersData.map((data, index) => ({
-        ...data,
-        ...additionalPassengerData[index],
-        bags: bags[index],
-      }))
-    );
+    const newPassengersInfoObject = passengersData.map((data, index) => ({
+      ...data,
+      ...additionalPassengerData[index],
+      bags: bags[index],
+    }))
+
+    const result = passengerListSchema.safeParse(newPassengersInfoObject);    
+
+    if (result.success){
+      setPassengerInfo(newPassengersInfoObject);
+      router.push("/seats/departure");
+    }
   };
 
   const handleCheckboxChange = (index) => {
@@ -404,7 +435,6 @@ export default function PassengerPage() {
             color={"text-grey-100"}
             bgColor={"bg-purpleBlue"}
             borderColor={"border-purpleBlue"}
-            destination={"/seats/departure"}
             disabled={!isFormValid}
             func={savePassengerData}
           />
