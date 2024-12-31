@@ -10,7 +10,7 @@ export async function POST(req) {
   // Check if email is provided
   if (!email || !password) {
     return new Response(
-      JSON.stringify({ error: "Email and password are required." }),
+      JSON.stringify({ message: "Email and password are required." }),
       { status: 400 }
     );
   }
@@ -19,7 +19,7 @@ export async function POST(req) {
   const user = await userModel.findOne({ email });
   if (!user) {
     return new Response(
-      JSON.stringify({ error: "User not found." }),
+      JSON.stringify({ mesage: "User not found." }),
       { status: 400 }
     );
   }
@@ -28,7 +28,7 @@ export async function POST(req) {
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     return new Response(
-      JSON.stringify({ error: "Invalid password." }),
+      JSON.stringify({ message: "Invalid User or Password." }),
       { status: 400 }
     );
   }

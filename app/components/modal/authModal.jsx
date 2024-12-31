@@ -56,6 +56,15 @@ export default function AuthModal({ buttonLabel, modalType }) {
         router.refresh();
 
       }
+      else {
+        // Handle errors from the server response
+        const errorData = await response.json();
+        if (errorData.message) {
+          setErrors({ server: errorData.message });
+        } else {
+          setErrors({ server: "An unexpected error occurred." });
+        }
+      }
     } catch (e) {
       const validationErrors = {};
       e?.errors?.forEach((err) => {
@@ -85,6 +94,15 @@ export default function AuthModal({ buttonLabel, modalType }) {
         setErrors({});
         handleClose();
         router.refresh();
+      }
+      else {
+        // Handle errors from the server response
+        const errorData = await response.json();
+        if (errorData.message) {
+          setErrors({ server: errorData.message });
+        } else {
+          setErrors({ server: "An unexpected error occurred." });
+        }
       }
     } catch (e) {
       const validationErrors = {};
@@ -177,12 +195,18 @@ export default function AuthModal({ buttonLabel, modalType }) {
                     <p className="text-red text-sm mt-1">{errors.password}</p>
                   )}
                 </div>
+                <div>
                 <button
                   type="submit"
                   className="bg-purpleBlue text-white px-4 py-2 rounded w-full"
                 >
                   Sign In
                 </button>
+
+                {errors.server && (
+                    <p className="text-red text-sm mt-1">{errors.server}</p>
+                  )}
+                </div>
               </form>
               <div className="flex items-center mt-4">
                 <div className="flex-grow border-t border-gray-400 mr-2"></div>
@@ -311,10 +335,11 @@ export default function AuthModal({ buttonLabel, modalType }) {
                 <input
                   type="checkbox"
                   name="terms"
+                  id="terms"
                   checked={formData.terms}
                   onChange={handleChange}
                 />
-                <label className="ml-2 text-grey-600">
+                <label className="ml-2 text-grey-600" htmlFor="terms">
                   I agree to the{" "}
                   <span className="text-purpleBlue">terms and conditions</span>
                 </label>
@@ -326,12 +351,18 @@ export default function AuthModal({ buttonLabel, modalType }) {
                 <label htmlFor="alerts" className="ml-2  text-grey-600">
                   Send me the latest deal alerts
                 </label>
+                <div>
                 <button
                   type="submit"
                   className="bg-purpleBlue text-white px-4 py-2 mt-4 rounded w-full"
                 >
                   Sign Up
                 </button>
+                {errors.server && (
+                    <p className="text-red text-sm mt-1">{errors.server}</p>
+                  )}
+
+                </div>
               </form>
               <div className="flex items-center mt-4">
                 <div className="flex-grow border-t border-gray-400 mr-2"></div>
