@@ -14,6 +14,7 @@ export const {
         password:{label:"password",type:"text",placeholder:"password"}
       },
       async authorize(credentials){
+          console.log("auth step 2")
           const {email,password} = credentials;
 
           if (!email || !password){
@@ -21,7 +22,7 @@ export const {
           }
 
           const res = await fetch(
-            "http://localhost:3001/api/signin",
+            "http://localhost:3000/api/signin",
             {
               method: "POST",
               body: JSON.stringify(credentials),
