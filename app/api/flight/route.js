@@ -27,7 +27,6 @@ export async function GET(req) {
      if (searchParams.has('airline')) {
     const airline = searchParams.get('airline').replace(/\s+/g, ' ').trim();  // Normalize spaces
     filters.airline = { $regex: new RegExp(`^${airline}$`, 'i') };  // Case-insensitive match, ensure exact match
-    console.log("Airline Filter Applied:", filters.airline);
   }
   
     if (searchParams.has('maxPrice')) {

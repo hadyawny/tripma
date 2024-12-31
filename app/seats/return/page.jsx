@@ -33,7 +33,6 @@ export default function ReturnSeatspage() {
     }
 
     if (selectedSeats.length == passengersCount) {
-      console.log({selectedSeats,passengersCount});
       
       setIsSeatsBooked(true);
     } else {

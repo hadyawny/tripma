@@ -87,7 +87,6 @@ export default function PassengerPage() {
     updatedSameAsPassenger[index] = !updatedSameAsPassenger[index];
 
     setSameAsPassenger(updatedSameAsPassenger);
-    console.log(updatedSameAsPassenger, index);
     if (updatedSameAsPassenger[index]) {
       setPassengersData((prevData) =>
         prevData.map((data, i) =>

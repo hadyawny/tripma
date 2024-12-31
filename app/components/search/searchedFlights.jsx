@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import SearchItem from "./searchItem";
+import LoadingCircle from "../loadingCircle";
 
 export default function SearchedFlights({ searchResults, onFlightSelect }) {
   const [selectedFlightId, setSelectedFlightId] = useState(null);
@@ -9,16 +10,13 @@ export default function SearchedFlights({ searchResults, onFlightSelect }) {
     setSelectedFlightId(flight._id);
     onFlightSelect(flight);
   };
-  console.log(searchResults);
   
 
   return (
     <div className="w-full border border-grey-400 rounded-xl h-[33rem] mt-4 p-4 overflow-hidden">
       {searchResults === null ? (
         <div className="flex justify-center items-center h-full">
-          <p className="text-lg text-purpleBlue text-center">
-          Loading . . .
-        </p> 
+          <LoadingCircle/>
         </div>
       ) : searchResults && searchResults.length > 0 ? (
         searchResults.map((item) => (

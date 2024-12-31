@@ -14,7 +14,6 @@ export const {
         password:{label:"password",type:"text",placeholder:"password"}
       },
       async authorize(credentials){
-          console.log("auth step 2")
           const {email,password} = credentials;
 
           if (!email || !password){
@@ -30,7 +29,6 @@ export const {
             }
           );
           const user = await res.json();
-          console.log(user);
           
            if (res.ok && user) {
             return user;
@@ -53,4 +51,23 @@ export const {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      // Attach user information to the token if user exists
+      if (user) {
+        token._id = user._id; // Include _id
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      // Map fields from the token to the session
+      session.user = {
+        ...session.user, 
+        _id: token._id, 
+      };
+      return session;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 });

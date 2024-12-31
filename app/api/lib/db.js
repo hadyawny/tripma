@@ -4,7 +4,6 @@ global.mongoose = global.mongoose || { conn: null, promise: null };
 
 export async function dbConnect() {
   if (global.mongoose.conn) {
-    console.log("MongoDB connection is already established");
     return global.mongoose.conn;
   }
 
@@ -22,7 +21,6 @@ export async function dbConnect() {
 
   try {
     global.mongoose.conn = await global.mongoose.promise;
-    console.log("MongoDB connection successful");
     return global.mongoose.conn;
   } catch (error) {
     console.error("MongoDB connection failed:", error.message);

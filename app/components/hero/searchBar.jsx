@@ -85,7 +85,6 @@ export default function SearchBar({
       toCity: toCity,
     }).toString();
 
-    console.log(queryParams);
     
     // router.push(`/search?${queryParams}`);
     window.location.assign(`/search?${queryParams}`);

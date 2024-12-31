@@ -39,7 +39,6 @@ export default function PaymentPage() {
   }, [paymentData]);
 
   useEffect(() => {
-    console.log(selectedSeatsDeparting, selectedSeatsReturning);
   
     const countBusinessClassSeats = (seats) => {
       let count = 0;

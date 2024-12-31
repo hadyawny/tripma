@@ -12,7 +12,6 @@ export async function logout() {
 
 
 export async function nextAuthSignIn(email, password) {
-  console.log("auth step 1")
   await signIn("credentials", {
     email,
     password,
