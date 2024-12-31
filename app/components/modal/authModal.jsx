@@ -39,7 +39,7 @@ export default function AuthModal({ buttonLabel, modalType }) {
 
       const { email, password } = data;
 
-      const response = await fetch("http://localhost:3000/api/register", {
+      const response = await fetch(`${process.env.BASE_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export default function AuthModal({ buttonLabel, modalType }) {
 
       const { email, password } = data;
       
-      const response = await fetch("http://localhost:3000/api/signin", {
+      const response = await fetch(`${process.env.BASE_URL}/api/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
