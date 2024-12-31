@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const passengerSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  dateOfBirth: { type: Date, required: true },
+  dateOfBirth: { type: String, required: true },
   email: { type: String, required: true, match: /\S+@\S+\.\S+/ }, 
   phoneNumber: { type: String, required: true },
   emergencyFirstName: { type: String, required: true },
@@ -11,6 +11,8 @@ const passengerSchema = new mongoose.Schema({
   emergencyEmail: { type: String, required: true, match: /\S+@\S+\.\S+/ },
   emergencyPhoneNumber: { type: String, required: true },
   travellerNumber: { type: String, required: true },
+  bags: { type: Number, required: true },
+
 
   // Optional values
   middleName: { type: String, default: '' },

@@ -11,6 +11,8 @@ const passengerSchema = Joi.object({
   emergencyEmail: Joi.string().email().required(),
   emergencyPhoneNumber: Joi.string().required(),
   travellerNumber: Joi.string().required(),
+  bags: Joi.number().integer().min(0).required(), // Include the `bags` field
+
 
   middleName: Joi.string().optional().allow(''),
   suffix: Joi.string().optional().allow(''),
