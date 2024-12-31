@@ -1,10 +1,10 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "./components/navBar/navBar";
 import Footer from "./components/footer/footer";
 import CookiesPopUp from "./components/cookiesPopUp";
 import HomeNotification from "./components/homeNotification";
 import { GlobalContextProvider } from "./context/store";
+import SessionProviderWrapper from "./components/sessionProviderWrapper";
 
 
 export const metadata = {
@@ -17,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
       >
+        <SessionProviderWrapper>
         <GlobalContextProvider>
         <HomeNotification/>
         <NavBar />
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
         <CookiesPopUp/>
         <Footer/>
         </GlobalContextProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );

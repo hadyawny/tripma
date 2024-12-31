@@ -1,8 +1,8 @@
 "use client";
 
 import { nextAuthGoogleSignIn, nextAuthSignIn } from "@/app/actions/authActions";
-import { signIn } from "@/auth";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -29,6 +29,7 @@ const signUpSchema = z.object({
 export default function AuthModal({ buttonLabel, modalType }) {
   const [isOpen, setIsOpen] = useState(false);
   const [errors, setErrors] = useState({});
+  const router = useRouter(); // Use the router hook
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
@@ -53,7 +54,8 @@ export default function AuthModal({ buttonLabel, modalType }) {
 
         setErrors({});
         handleClose();
-        window.location.reload();
+        router.refresh();
+
       }
     } catch (e) {
       const validationErrors = {};
@@ -83,7 +85,7 @@ export default function AuthModal({ buttonLabel, modalType }) {
 
         setErrors({});
         handleClose();
-        window.location.reload();
+        router.refresh();
       }
     } catch (e) {
       const validationErrors = {};

@@ -7,6 +7,7 @@ import PriceStatistics from "./priceStatistics";
 import Image from "next/image";
 import TotalPrice from "./totalPrice";
 import FilterDropDownMenu from "./filterDropDownMenu";
+import { useSession } from "next-auth/react"
 
 export default function SearchResults({
   fromValue,
@@ -23,6 +24,7 @@ export default function SearchResults({
   const [filteredDepartingResults, setFilteredDepartingResults] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [airLine, setAirline] = useState(null);
+  const { data: session } = useSession()
 
   async function onFlightSelect(item) {
     if (!selectedDepartingFlight) {
