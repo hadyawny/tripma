@@ -1,3 +1,5 @@
+"use client"
+
 export const LoadingCircle = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">

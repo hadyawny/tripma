@@ -4,6 +4,9 @@ import { useGlobalContext } from "../context/store";
 import NavigationButton from "../components/navigationButton";
 import SelectedFlights from "../components/search/selectedFlights";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import LoadingCircle from "../components/loadingCircle";
 
 export default function PassengerPage() {
   const {
@@ -12,6 +15,15 @@ export default function PassengerPage() {
     setPassengerInfo,
     passengersCount,
   } = useGlobalContext();
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "unauthenticated" || !selectedDepartingFlight) {
+      router.push("/");
+    }
+  }, [status, selectedDepartingFlight]);
+
   const [sameAsPassenger, setSameAsPassenger] = useState(
     Array(passengersCount).fill(false)
   );
@@ -117,6 +129,14 @@ export default function PassengerPage() {
       );
     }
   };
+
+  if (
+    !selectedDepartingFlight ||
+    status === "loading" ||
+    status === "unauthenticated"
+  ) {
+    return <LoadingCircle />;
+  }
 
   return (
     <div className="flex mx-24 my-14">
@@ -378,7 +398,6 @@ export default function PassengerPage() {
               departingFlightInfo={selectedDepartingFlight}
               returningFlightInfo={selectedReturningFlight}
             />
-            
           )}
           <NavigationButton
             text={"Select Seats"}

@@ -5,6 +5,9 @@ import NavigationButton from "../components/navigationButton";
 import Image from "next/image";
 import ConfirmationMap from "../components/confirmation/confirmationMap";
 import HotelDealCard from "../components/confirmation/hotelDealCard";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import LoadingCircle from "../components/loadingCircle";
 
 export default function ConfirmationPage() {
   const {
@@ -13,6 +16,15 @@ export default function ConfirmationPage() {
     selectedSeatsDeparting,
     selectedSeatsReturning,
   } = useGlobalContext();
+
+    const { data: session, status } = useSession();
+    const router = useRouter();
+    useEffect(() => {
+      if (status === "unauthenticated" || !selectedDepartingFlight) {
+        router.push("/");
+      }
+    }, [status, selectedDepartingFlight]);
+  
 
   const [departingTripLength, setDepartingTripLength] = useState("");
   const [returningTripLength, setReturningTripLength] = useState("");
@@ -77,6 +89,14 @@ export default function ConfirmationPage() {
 
   const taxes = totalPrice * (24 / 100);
   const subtotal = totalPrice - taxes;
+
+   if (
+      !selectedDepartingFlight ||
+      status === "loading" ||
+      status === "unauthenticated"
+    ) {
+      return <LoadingCircle />;
+    }
 
   return (
     <div className="flex mx-24 my-14 justify-between">

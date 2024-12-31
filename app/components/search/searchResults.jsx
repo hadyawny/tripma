@@ -24,7 +24,6 @@ export default function SearchResults({
   const [filteredDepartingResults, setFilteredDepartingResults] = useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [airLine, setAirline] = useState(null);
-  const { data: session ,status } = useSession()
 
   async function onFlightSelect(item) {
     if (!selectedDepartingFlight) {

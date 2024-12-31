@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import "./seatsGrid.css";
-import { useGlobalContext } from "@/app/context/store";
 
 const SeatsGrid = ({ passengerCount, getSelectedSeats, bookedSeats }) => {
   // State to track selected seats

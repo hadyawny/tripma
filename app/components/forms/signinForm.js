@@ -1,3 +1,4 @@
+"use client"
 import { userSignin } from "@/app/actions/authActions";
 import Image from "next/image";
 import React, { useEffect } from "react";

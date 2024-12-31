@@ -4,6 +4,9 @@ import { useGlobalContext } from "../context/store";
 import NavigationButton from "../components/navigationButton";
 import SelectedFlights from "../components/search/selectedFlights";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import LoadingCircle from "../components/loadingCircle";
 
 export default function PaymentPage() {
   const {
@@ -11,8 +14,15 @@ export default function PaymentPage() {
     selectedReturningFlight,
     selectedSeatsDeparting,
     selectedSeatsReturning,
-
   } = useGlobalContext();
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "unauthenticated" || !selectedDepartingFlight) {
+      router.push("/");
+    }
+  }, [status, selectedDepartingFlight]);
 
   const [paymentData, setPaymentData] = useState({
     cardNumber: "",
@@ -24,12 +34,10 @@ export default function PaymentPage() {
   const [isPaymentValid, setIsPaymentValid] = useState(false);
   const [bussinessClassSeatsCount, setbussinessClassSeatsCount] = useState(0);
 
-  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setPaymentData((prev) => ({ ...prev, [name]: value }));
   };
-
 
   useEffect(() => {
     const isPaymentValid = Object.values(paymentData).every(
@@ -39,7 +47,6 @@ export default function PaymentPage() {
   }, [paymentData]);
 
   useEffect(() => {
-  
     const countBusinessClassSeats = (seats) => {
       let count = 0;
       seats?.forEach((seat) => {
@@ -50,17 +57,24 @@ export default function PaymentPage() {
       });
       return count;
     };
-  
-    const departingCount = selectedSeatsDeparting ? countBusinessClassSeats(selectedSeatsDeparting): 0;
-    const returningCount = selectedSeatsReturning ? countBusinessClassSeats(selectedSeatsReturning) : 0;
-  
-    setbussinessClassSeatsCount(departingCount + returningCount);
-  
-  }, [selectedSeatsDeparting, selectedSeatsReturning]);
-  
-  
 
-  
+    const departingCount = selectedSeatsDeparting
+      ? countBusinessClassSeats(selectedSeatsDeparting)
+      : 0;
+    const returningCount = selectedSeatsReturning
+      ? countBusinessClassSeats(selectedSeatsReturning)
+      : 0;
+
+    setbussinessClassSeatsCount(departingCount + returningCount);
+  }, [selectedSeatsDeparting, selectedSeatsReturning]);
+
+  if (
+    !selectedDepartingFlight ||
+    status === "loading" ||
+    status === "unauthenticated"
+  ) {
+    return <LoadingCircle />;
+  }
 
   return (
     <div className="flex mx-24 my-14">
@@ -70,33 +84,68 @@ export default function PaymentPage() {
           Enter the required information for each traveler and be sure that it
           exactly matches the government-issued ID presented at the airport.
         </p>
-        <div className="w-[43rem] border rounded-lg border-purpleBlue flex mb-10" >
+        <div className="w-[43rem] border rounded-lg border-purpleBlue flex mb-10">
           <div className="flex bg-purpleBlue py-3 px-5 border rounded-lg border-purpleBlue ">
-            <Image src='/ccicon.svg' alt="credit card icon" width={14} height={11} className="mr-2"/>
+            <Image
+              src="/ccicon.svg"
+              alt="credit card icon"
+              width={14}
+              height={11}
+              className="mr-2"
+            />
             <span className="text-lg text-grey-100 ">Credit card</span>
           </div>
           <div className="flex  py-3 px-5 ">
-            <Image src='/googleiconpayment.svg' alt="credit card icon" width={14} height={11} className="mr-2"/>
+            <Image
+              src="/googleiconpayment.svg"
+              alt="credit card icon"
+              width={14}
+              height={11}
+              className="mr-2"
+            />
             <span className="text-lg text-purpleBlue ">Google Pay</span>
           </div>
           <div className="flex  py-3 px-5 ">
-            <Image src='/appleiconpayment.svg' alt="credit card icon" width={14} height={11} className="mr-2"/>
+            <Image
+              src="/appleiconpayment.svg"
+              alt="credit card icon"
+              width={14}
+              height={11}
+              className="mr-2"
+            />
             <span className="text-lg text-purpleBlue ">Apple pay</span>
           </div>
           <div className="flex  py-3 px-5 ">
-            <Image src='/paypalicon.svg' alt="credit card icon" width={14} height={11} className="mr-2"/>
+            <Image
+              src="/paypalicon.svg"
+              alt="credit card icon"
+              width={14}
+              height={11}
+              className="mr-2"
+            />
             <span className="text-lg text-purpleBlue ">Paypal</span>
           </div>
           <div className="flex  py-3 px-5 ">
-            <Image src='/cryptoicon.svg' alt="credit card icon" width={14} height={11} className="mr-2"/>
+            <Image
+              src="/cryptoicon.svg"
+              alt="credit card icon"
+              width={14}
+              height={11}
+              className="mr-2"
+            />
             <span className="text-lg text-purpleBlue ">Crypto</span>
           </div>
-
         </div>
-        <p className="text-h4 text-grey-600 font-bold mb-6">Credit card details</p>
+        <p className="text-h4 text-grey-600 font-bold mb-6">
+          Credit card details
+        </p>
 
         <div className="mb-6">
-          <input type="checkbox" name="sameBillingAddress" id="sameBillingAddress" />
+          <input
+            type="checkbox"
+            name="sameBillingAddress"
+            id="sameBillingAddress"
+          />
           <label htmlFor="sameBillingAddress" className="ml-2  text-grey-600">
             Billing address is same as Passenger 1
           </label>
@@ -115,22 +164,22 @@ export default function PaymentPage() {
           value={paymentData.cardNumber}
           name="cardNumber"
           onChange={handleInputChange}
-
           className=" p-2 mb-4 w-[30rem] border border-gray-300 rounded"
         />
 
         <div className="flex justify-between w-[30rem]">
           <div className="relative ">
-          <input
-            type="text"
-            placeholder="Expiration date"
-            value={paymentData.expirationDate}
-            name="expirationDate"
-            onChange={handleInputChange}
-
-            className=" p-2 mb-4 border w-[14rem] border-gray-300 rounded"
-          />
-          <span className="text-xs text-grey-400 absolute -bottom-1 left-0">MM/YY</span>
+            <input
+              type="text"
+              placeholder="Expiration date"
+              value={paymentData.expirationDate}
+              name="expirationDate"
+              onChange={handleInputChange}
+              className=" p-2 mb-4 border w-[14rem] border-gray-300 rounded"
+            />
+            <span className="text-xs text-grey-400 absolute -bottom-1 left-0">
+              MM/YY
+            </span>
           </div>
           <input
             type="text"
@@ -142,7 +191,9 @@ export default function PaymentPage() {
           />
         </div>
 
-        <p className="text-h4 text-grey-600 font-bold mt-6 mb-4 ">Create an account</p>
+        <p className="text-h4 text-grey-600 font-bold mt-6 mb-4 ">
+          Create an account
+        </p>
         <p className="text-lg text-grey-400 mb-4">
           Tripma is free to use as a guest, but if you create an account today,
           you can save and view flights, manage your trips, earn rewards, and
@@ -218,7 +269,6 @@ export default function PaymentPage() {
             bgColor={"text-purpleBlue"}
             borderColor={"border-purpleBlue"}
             destination={"/seats/departure"}
-
           />
           <NavigationButton
             text={"Confirm and pay"}
@@ -226,7 +276,7 @@ export default function PaymentPage() {
             bgColor={"bg-purpleBlue"}
             borderColor={"border-purpleBlue"}
             destination={"/confirmation"}
-            disabled={isPaymentValid? false: true}
+            disabled={isPaymentValid ? false : true}
           />
         </div>
       </div>
@@ -246,7 +296,7 @@ export default function PaymentPage() {
             bgColor={"bg-purpleBlue"}
             borderColor={"border-purpleBlue"}
             destination={"/confirmation"}
-            disabled={isPaymentValid? false: true}
+            disabled={isPaymentValid ? false : true}
           />
         </div>
       </div>

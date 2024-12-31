@@ -4,6 +4,9 @@ import { useGlobalContext } from "../../context/store";
 import Image from "next/image";
 import NavigationButton from "../../components/navigationButton";
 import SeatsGrid from "../../components/seats/seatsGrid";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import LoadingCircle from "@/app/components/loadingCircle";
 
 export default function Seatspage() {
   const {
@@ -14,6 +17,15 @@ export default function Seatspage() {
     setSelectedSeatsDeparting,
     selectedSeatsDeparting,
   } = useGlobalContext();
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "unauthenticated" || !selectedDepartingFlight) {
+      router.push("/");
+    }
+  }, [status, selectedDepartingFlight]);
+
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [isBusinessClass, setIsBusinessClass] = useState(false);
   const [isSeatsBooked, setIsSeatsBooked] = useState(false);
@@ -34,12 +46,19 @@ export default function Seatspage() {
     }
 
     if (selectedSeats.length == passengersCount) {
-      
       setIsSeatsBooked(true);
     } else {
       setIsSeatsBooked(false);
     }
   }, [selectedSeats]);
+
+  if (
+    !selectedDepartingFlight ||
+    status === "loading" ||
+    status === "unauthenticated"
+  ) {
+    return <LoadingCircle />;
+  }
 
   return (
     <div className="flex relative h-[160rem]">
@@ -93,7 +112,13 @@ export default function Seatspage() {
               </span>
             </p>
             <p>Departing</p>
-            <Image src="/activearrow.svg" alt="arrow" width={20} height={8} className="absolute bottom-0 left-32 "/>
+            <Image
+              src="/activearrow.svg"
+              alt="arrow"
+              width={20}
+              height={8}
+              className="absolute bottom-0 left-32 "
+            />
           </div>
           {selectedReturningFlight && (
             <div className="h-full pl-8   flex flex-col justify-center text-grey-100">
@@ -282,18 +307,20 @@ export default function Seatspage() {
             </p>
           </div>
           <div className="flex">
-          <NavigationButton
-            text={"Save and close"}
-            borderColor={"border-purpleBlue"}
-            color={"text-purpleBlue mr-5"}
-          />
-          <NavigationButton
-            text={ selectedReturningFlight? "Next flight" : "Payment Method"}
-            bgColor={"bg-purpleBlue"}
-            color={"text-trueWhite"}
-            disabled={isSeatsBooked ? false : true}
-            destination={selectedReturningFlight? "/seats/return" : "/payment"}
-          />
+            <NavigationButton
+              text={"Save and close"}
+              borderColor={"border-purpleBlue"}
+              color={"text-purpleBlue mr-5"}
+            />
+            <NavigationButton
+              text={selectedReturningFlight ? "Next flight" : "Payment Method"}
+              bgColor={"bg-purpleBlue"}
+              color={"text-trueWhite"}
+              disabled={isSeatsBooked ? false : true}
+              destination={
+                selectedReturningFlight ? "/seats/return" : "/payment"
+              }
+            />
           </div>
         </div>
       </div>
