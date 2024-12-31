@@ -39,7 +39,7 @@ export default function AuthModal({ buttonLabel, modalType }) {
 
       const { email, password } = data;
 
-      const response = await fetch("http://localhost:3000/api/register", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +80,7 @@ export default function AuthModal({ buttonLabel, modalType }) {
 
       const { email, password } = data;
       
-      const response = await fetch("http://localhost:3000/api/signin", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,7 +134,7 @@ export default function AuthModal({ buttonLabel, modalType }) {
 
   function SignInModal({ onSubmit }) {
     const [formData, setFormData] = useState({ email: "", password: "" });
-
+    
     const handleChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     };

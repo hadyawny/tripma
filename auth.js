@@ -21,7 +21,7 @@ export const {
           }
 
           const res = await fetch(
-            "http://localhost:3000/api/signin",
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/signin`,
             {
               method: "POST",
               body: JSON.stringify(credentials),
