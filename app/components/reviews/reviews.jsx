@@ -3,13 +3,13 @@ import ReviewCard from "./reviewCard";
 
 export default function Reviews() {
   return (
-    <div className="mt-16 mb-20">
-      <div className="flex justify-center mb-10 mt-20 ">
-        <span className="text-grey-600 text-h3">
+    <div className="mt-16 mb-20 px-4">
+      <div className="flex justify-center mb-10 mt-20">
+        <span className="text-grey-600 text-h3 text-center">
           What <span className="text-purpleBlue">Tripma</span> users are saying
         </span>
       </div>
-      <div className="flex gap-32 justify-center">
+      <div className="flex flex-col md:flex-row gap-8 md:gap-32 justify-center">
         <ReviewCard
           date={"April 2019"}
           location={"Seoul, South Korea "}

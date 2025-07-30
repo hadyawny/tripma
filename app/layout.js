@@ -6,25 +6,27 @@ import HomeNotification from "./components/homeNotification";
 import { GlobalContextProvider } from "./context/store";
 import SessionProviderWrapper from "./components/sessionProviderWrapper";
 
-
 export const metadata = {
   title: "Tripma",
   description: "Flight booking website",
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-      >
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body>
         <SessionProviderWrapper>
-        <GlobalContextProvider>
-        <HomeNotification/>
-        <NavBar />
-        {children}
-        <CookiesPopUp/>
-        <Footer/>
-        </GlobalContextProvider>
+          <GlobalContextProvider>
+            <HomeNotification />
+            <NavBar />
+            {children}
+            <CookiesPopUp />
+            <Footer />
+          </GlobalContextProvider>
         </SessionProviderWrapper>
       </body>
     </html>

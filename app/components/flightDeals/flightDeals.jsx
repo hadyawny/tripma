@@ -5,8 +5,8 @@ import FlightDealsCard from "./flightDealsCard";
 
 export default function FlightDeals() {
   return (
-    <div className="mx-16 my-10">
-      <div className="flex justify-between">
+    <div className="mx-4 md:mx-16 my-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <span className="text-h3 text-grey-400">
             Find your next adventure with these{" "}
@@ -26,7 +26,7 @@ export default function FlightDeals() {
           </div>
         </Link>
       </div>
-      <div className="mt-6 flex gap-10 content-center justify-center">
+      <div className="mt-6 flex flex-col md:flex-row gap-6 md:gap-10 content-center justify-center">
         <FlightDealsCard
           description={"China's most international city"}
           location={"The Bund,"}

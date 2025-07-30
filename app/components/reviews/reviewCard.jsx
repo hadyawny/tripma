@@ -9,22 +9,21 @@ export default function ReviewCard({
   date,
   reviewContent,
 }) {
-    const stars = [0, 1, 2, 3, 4];
+  const stars = [0, 1, 2, 3, 4];
 
   return (
-    <div className="flex p-4">
-      <div className="mr-4 ">
+    <div className="flex p-4 w-full max-w-lg">
+      <div className="mr-4 flex-shrink-0">
         <Image
           src={pictureSrc}
           alt="profile picture"
           width={48}
           height={48}
-          
         ></Image>
       </div>
-      <div className="max-w-[400px]">
+      <div className="flex-1">
         <p className="text-grey-600 text-h4">{name}</p>
-        <p className="text-grey-300 text-lg">
+        <p className="text-grey-300 text-sm md:text-lg">
           {" "}
           <span className="text-grey-600">{location}</span> |{" "}
           <span className="text-grey-600">{date}</span>
@@ -32,7 +31,7 @@ export default function ReviewCard({
         <div className="flex">
           {stars.map((index) => (
             <Image
-            key={index}
+              key={index}
               src={index < rating ? "/Starfilled.png" : "/Starempty.png"}
               alt="Star"
               width={18}
@@ -41,7 +40,9 @@ export default function ReviewCard({
             />
           ))}
         </div>
-        <p className="text-lg text-grey-900">{reviewContent} <span className="text-purpleBlue">Read more...</span></p>
+        <p className="text-sm md:text-lg text-grey-900">
+          {reviewContent} <span className="text-purpleBlue">Read more...</span>
+        </p>
       </div>
     </div>
   );

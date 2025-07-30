@@ -16,7 +16,6 @@ export default function PaymentPage() {
     selectedSeatsDeparting,
     selectedSeatsReturning,
     passengerInfo,
-    
   } = useGlobalContext();
 
   const { data: session, status } = useSession();
@@ -26,7 +25,7 @@ export default function PaymentPage() {
       router.push("/");
     }
   }, [status, selectedDepartingFlight]);
-  const [formErrors, setFormErrors] = useState({}); 
+  const [formErrors, setFormErrors] = useState({});
 
   const [paymentData, setPaymentData] = useState({
     cardNumber: "",
@@ -35,44 +34,44 @@ export default function PaymentPage() {
     cvv: "",
   });
 
-
   const paymentDataSchema = z.object({
     cardNumber: z
       .string()
-      .min(16, 'Card number must be 16 digits')
-      .max(16, 'Card number must be 16 digits')
-      .regex(/^\d{16}$/, 'Card number must contain only numbers'),
-    
+      .min(16, "Card number must be 16 digits")
+      .max(16, "Card number must be 16 digits")
+      .regex(/^\d{16}$/, "Card number must contain only numbers"),
+
     nameOnCard: z
       .string()
-      .min(1, 'Name on card is required')
-      .max(100, 'Name on card is too long'),
-  
+      .min(1, "Name on card is required")
+      .max(100, "Name on card is too long"),
+
     expirationDate: z
       .string()
-      .refine(val => /^\d{2}\/\d{2}$/.test(val), {
-        message: 'Expiration date must be in MM/YY format',
+      .refine((val) => /^\d{2}\/\d{2}$/.test(val), {
+        message: "Expiration date must be in MM/YY format",
       })
-      .refine(val => {
-        const [month, year] = val.split('/');
-        const currentDate = new Date();
-        const currentMonth = currentDate.getMonth() + 1;
-        const currentYear = currentDate.getFullYear() % 100;
-        return (
-          parseInt(year) > currentYear ||
-          (parseInt(year) === currentYear && parseInt(month) >= currentMonth)
-        );
-      }, {
-        message: 'Expiration date cannot be in the past',
-      }),
-  
+      .refine(
+        (val) => {
+          const [month, year] = val.split("/");
+          const currentDate = new Date();
+          const currentMonth = currentDate.getMonth() + 1;
+          const currentYear = currentDate.getFullYear() % 100;
+          return (
+            parseInt(year) > currentYear ||
+            (parseInt(year) === currentYear && parseInt(month) >= currentMonth)
+          );
+        },
+        {
+          message: "Expiration date cannot be in the past",
+        }
+      ),
+
     cvv: z
       .string()
-      .length(3, 'CVV must be 3 digits')
-      .regex(/^\d{3}$/, 'CVV must be a 3-digit number'),
+      .length(3, "CVV must be 3 digits")
+      .regex(/^\d{3}$/, "CVV must be a 3-digit number"),
   });
-  
-
 
   const [isPaymentValid, setIsPaymentValid] = useState(false);
   const [bussinessClassSeatsCount, setbussinessClassSeatsCount] = useState(0);
@@ -111,60 +110,57 @@ export default function PaymentPage() {
     setbussinessClassSeatsCount(departingCount + returningCount);
   }, [selectedSeatsDeparting, selectedSeatsReturning]);
 
-   async function handleConfirmAndPay() {
+  async function handleConfirmAndPay() {
     const result = paymentDataSchema.safeParse(paymentData);
 
     if (!result.success) {
       const errors = result.error.format();
       console.log(errors);
-      
+
       const formattedErrors = Object.keys(errors).reduce((acc, key) => {
         const errorMessages = errors[key]?._errors || [];
-      
-        acc[key] = errorMessages.length > 0 ? errorMessages[0] : ''; 
-      
+
+        acc[key] = errorMessages.length > 0 ? errorMessages[0] : "";
+
         return acc;
       }, {});
-      setFormErrors(formattedErrors); 
+      setFormErrors(formattedErrors);
       console.log(formattedErrors);
-      
+
       return;
     }
-    setFormErrors({})
+    setFormErrors({});
 
     try {
+      const bookingObject = {
+        passengerList: passengerInfo,
+        selectedDepartingFlight: selectedDepartingFlight._id,
+        selectedReturningFlight: selectedReturningFlight
+          ? selectedReturningFlight._id
+          : null,
+        selectedSeatsDeparting: selectedSeatsDeparting,
+        selectedSeatsReturning: selectedSeatsReturning
+          ? selectedSeatsReturning
+          : null,
+        user_id: session.user._id,
+      };
 
-
-          const bookingObject= {
-            passengerList: passengerInfo,
-            selectedDepartingFlight: selectedDepartingFlight._id,
-            selectedReturningFlight: selectedReturningFlight? selectedReturningFlight._id : null,
-            selectedSeatsDeparting: selectedSeatsDeparting,
-            selectedSeatsReturning: selectedSeatsReturning? selectedSeatsReturning : null,
-            user_id: session.user._id,
-          }
-          
-          
-          const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/booking`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bookingObject),
-          });
-    
-          if (response.ok){
-            router.push("/confirmation");
-          }
-        } catch (e) {
-          
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/booking`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookingObject),
         }
+      );
 
-
-
+      if (response.ok) {
+        router.push("/confirmation");
+      }
+    } catch (e) {}
   }
-
-
 
   if (
     !selectedDepartingFlight ||
@@ -175,14 +171,14 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="flex mx-24 my-14">
-      <div className="w-3/5 flex flex-col items-start ">
+    <div className="flex flex-col lg:flex-row mx-4 md:mx-8 lg:mx-24 my-14 gap-8">
+      <div className="w-full lg:w-3/5 flex flex-col items-start">
         <p className="text-h3 text-purpleBlue mb-4">Payment method</p>
         <p className="text-lg text-grey-400 mb-9">
           Enter the required information for each traveler and be sure that it
           exactly matches the government-issued ID presented at the airport.
         </p>
-        <div className="w-[43rem] border rounded-lg border-purpleBlue flex mb-10">
+        <div className="w-full max-w-2xl border rounded-lg border-purpleBlue flex flex-wrap mb-10">
           <div className="flex bg-purpleBlue py-3 px-5 border rounded-lg border-purpleBlue ">
             <Image
               src="/ccicon.svg"
@@ -260,19 +256,17 @@ export default function PaymentPage() {
           <div className="text-red text-sm">{formErrors.nameOnCard}</div>
         )}
         <div className="mb-4">
-
-        <input
-          type="text"
-          placeholder="Card number"
-          value={paymentData.cardNumber}
-          name="cardNumber"
-          onChange={handleInputChange}
-          className=" p-2 mb-1 w-[30rem] border border-gray-300 rounded"
-        />
-        {formErrors.cardNumber && (
-          <div className="text-red text-sm">{formErrors.cardNumber}</div>
-        )}
-
+          <input
+            type="text"
+            placeholder="Card number"
+            value={paymentData.cardNumber}
+            name="cardNumber"
+            onChange={handleInputChange}
+            className=" p-2 mb-1 w-[30rem] border border-gray-300 rounded"
+          />
+          {formErrors.cardNumber && (
+            <div className="text-red text-sm">{formErrors.cardNumber}</div>
+          )}
         </div>
 
         <div className="flex justify-between w-[30rem]">
@@ -285,29 +279,32 @@ export default function PaymentPage() {
               onChange={handleInputChange}
               className=" p-2 mb-1 border w-[14rem] border-gray-300 rounded"
             />
-            {!formErrors.expirationDate && <span className="text-xs text-grey-400 absolute -bottom-4 left-0">
-              MM/YY
-            </span>}
+            {!formErrors.expirationDate && (
+              <span className="text-xs text-grey-400 absolute -bottom-4 left-0">
+                MM/YY
+              </span>
+            )}
             {formErrors.expirationDate && (
-              <div className="text-red text-sm ">{formErrors.expirationDate}</div>
+              <div className="text-red text-sm ">
+                {formErrors.expirationDate}
+              </div>
             )}
           </div>
           <div className="mb-4">
-          <input
-            type="text"
-            placeholder="CVV"
-            value={paymentData.cvv}
-            name="cvv"
-            onChange={handleInputChange}
-            className=" p-2 mb-1  border border-gray-300 rounded"
-          />
-          {formErrors.cvv && (
-            <div className="text-red text-sm">{formErrors.cvv}</div>
-          )}
+            <input
+              type="text"
+              placeholder="CVV"
+              value={paymentData.cvv}
+              name="cvv"
+              onChange={handleInputChange}
+              className=" p-2 mb-1  border border-gray-300 rounded"
+            />
+            {formErrors.cvv && (
+              <div className="text-red text-sm">{formErrors.cvv}</div>
+            )}
           </div>
         </div>
 
-      
         <p className="text-h4 text-grey-600 font-bold mt-12">
           Cancellation policy
         </p>
@@ -332,7 +329,6 @@ export default function PaymentPage() {
             borderColor={"border-purpleBlue"}
             disabled={isPaymentValid ? false : true}
             func={handleConfirmAndPay}
-
           />
         </div>
       </div>

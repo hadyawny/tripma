@@ -24,7 +24,7 @@ export default function CookiesPopUp() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-12 left-12 w-80 px-6 py-4 border border-purpleBlue bg-trueWhite rounded-xl ">
+    <div className="fixed bottom-4 left-4 right-4 md:bottom-12 md:left-12 md:right-auto md:w-80 px-6 py-4 border border-purpleBlue bg-trueWhite rounded-xl z-50">
       <div className="flex justify-between ">
         <p className="text-h4 text-purpleBlue">
           <span>By using our site, you</span>

@@ -24,12 +24,12 @@ export default function HomeNotification() {
   if (!visible) return null;
 
   return (
-    <div className="flex bg-purpleBlue w-full justify-between px-8">
-        <p className="text-h4 text-trueWhite py-4 w-11/12 text-center">
-          Join Tripma today and save up to 20% on your flight using code TRAVEL
-          at checkout. Promotion valid for new users only.
-        </p>
-      <div className="p-4 ">
+    <div className="flex bg-purpleBlue w-full justify-between px-4 md:px-8">
+      <p className="text-sm md:text-h4 text-trueWhite py-4 w-11/12 text-center">
+        Join Tripma today and save up to 20% on your flight using code TRAVEL at
+        checkout. Promotion valid for new users only.
+      </p>
+      <div className="p-4">
         <button onClick={handleDecline}>
           <Image
             src="/closewhite.png"

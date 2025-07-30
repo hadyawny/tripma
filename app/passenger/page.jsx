@@ -75,7 +75,6 @@ export default function PassengerPage() {
   // Define validation for a list of passengers
   const passengerListSchema = z.array(passengerSchema);
 
-
   const [bags, setBags] = useState(Array(passengersCount).fill(1));
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -115,11 +114,11 @@ export default function PassengerPage() {
       ...data,
       ...additionalPassengerData[index],
       bags: bags[index],
-    }))
+    }));
 
-    const result = passengerListSchema.safeParse(newPassengersInfoObject);    
+    const result = passengerListSchema.safeParse(newPassengersInfoObject);
 
-    if (result.success){
+    if (result.success) {
       setPassengerInfo(newPassengersInfoObject);
       router.push("/seats/departure");
     }
@@ -170,8 +169,8 @@ export default function PassengerPage() {
   }
 
   return (
-    <div className="flex mx-24 my-14">
-      <div className="w-3/5">
+    <div className="flex flex-col lg:flex-row mx-4 md:mx-8 lg:mx-24 my-14 gap-8">
+      <div className="w-full lg:w-3/5">
         <p className="text-h3 text-purpleBlue mb-4">Passenger information</p>
         <p className="text-lg text-grey-400 mb-9">
           Enter the required information for each traveler and be sure that it
@@ -183,11 +182,11 @@ export default function PassengerPage() {
             {/* form for each passenger */}
             <p className="text-h4 text-grey-600">Passenger {index + 1}</p>
 
-            <div className="flex text-lg mt-6">
+            <div className="flex flex-col md:flex-row text-lg mt-6 gap-4 md:gap-6">
               <input
                 type="text"
                 name="firstName"
-                className="border px-3 py-2 rounded border-grey-300 mr-6"
+                className="border px-3 py-2 rounded border-grey-300 w-full"
                 placeholder="First name*"
                 value={passengersData[index].firstName}
                 onChange={(e) => handleInputChange(e, index)}
@@ -195,7 +194,7 @@ export default function PassengerPage() {
               <input
                 type="text"
                 name="middleName"
-                className="border px-3 py-2 rounded border-grey-300 mr-6"
+                className="border px-3 py-2 rounded border-grey-300 w-full"
                 placeholder="Middle"
                 value={additionalPassengerData[index].middleName}
                 onChange={(e) => handleAdditionalInputChange(e, index)}

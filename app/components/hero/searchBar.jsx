@@ -14,27 +14,26 @@ export default function SearchBar({
   minorsValue,
   isRoundTripValue,
   fromCityValue,
-  toCityValue
+  toCityValue,
 }) {
-
-
   const [airports, setAirports] = useState([]);
 
   useEffect(() => {
-      async function fetchAirports() {
-          const res = await fetch('/api/airport');
-          const data = await res.json();
-          setAirports(data);
-      }
-      fetchAirports();
+    async function fetchAirports() {
+      const res = await fetch("/api/airport");
+      const data = await res.json();
+      setAirports(data);
+    }
+    fetchAirports();
   }, []);
 
-  
   const [from, setFrom] = useState(fromValue || null);
   const [to, setTo] = useState(toValue || null);
   const [fromCity, setFromCity] = useState(fromCityValue || null);
   const [toCity, setToCity] = useState(toCityValue || null);
-  const [isRoundTrip, setIsRoundTrip] = useState(isRoundTripValue === undefined ? true : isRoundTripValue);
+  const [isRoundTrip, setIsRoundTrip] = useState(
+    isRoundTripValue === undefined ? true : isRoundTripValue
+  );
   const [startDate, setStartDate] = useState(startDateValue || null);
   const [endDate, setEndDate] = useState(endDateValue || null);
   const [adults, setAdults] = useState(adultsValue || 1);
@@ -42,7 +41,6 @@ export default function SearchBar({
   const [error, setError] = useState("");
 
   const router = useRouter();
-
 
   function handleDateChange({ startDate, endDate, isRoundTrip }) {
     setStartDate(startDate);
@@ -54,12 +52,11 @@ export default function SearchBar({
     setMinors(minors);
   }
   function handleFromChange(item) {
-    
-    setFromCity(item.item.city)    
+    setFromCity(item.item.city);
     setFrom(item.item.code);
   }
   function handleToChange(item) {
-    setToCity(item.item.city)
+    setToCity(item.item.city);
     setTo(item.item.code);
   }
 
@@ -77,23 +74,22 @@ export default function SearchBar({
       from: from,
       to: to,
       startDate: startDate || "",
-      endDate: endDate ||"",
+      endDate: endDate || "",
       adults: adults,
       minors: minors,
-      isRoundTrip: isRoundTrip? "true": "false",
+      isRoundTrip: isRoundTrip ? "true" : "false",
       fromCity: fromCity,
       toCity: toCity,
     }).toString();
 
-    
     // router.push(`/search?${queryParams}`);
     window.location.assign(`/search?${queryParams}`);
   }
 
   return (
-    <div className=" text-grey-400">
+    <div className="text-grey-400 w-full max-w-4xl px-4">
       <form className="" onSubmit={handleSearchSubmit}>
-        <div className="flex">
+        <div className="flex flex-col md:flex-row gap-2 md:gap-0">
           <DropDownMenu
             title={from || "From where?"}
             value={from}
@@ -108,21 +104,25 @@ export default function SearchBar({
             data={airports}
             onItemsChange={handleToChange}
           />
-          <TripDatePicker startDateValue={startDate} endDateValue={endDate} isRoundTripValue={isRoundTrip} onDateChange={handleDateChange} />
+          <TripDatePicker
+            startDateValue={startDate}
+            endDateValue={endDate}
+            isRoundTripValue={isRoundTrip}
+            onDateChange={handleDateChange}
+          />
           <Passengers
-            
             adultsValue={adults}
             minorsValue={minors}
             onPassengersChange={handlePassengersChange}
           />
           <button
             type="submit"
-            className=" text-white px-4 py-2 rounded-r-lg bg-purpleBlue "
+            className="text-white px-4 py-2 rounded-r-lg md:rounded-r-lg rounded-lg bg-purpleBlue w-full md:w-auto"
           >
             Search
           </button>
         </div>
-        {error && <div className="text-red">{error}</div>}
+        {error && <div className="text-red mt-2">{error}</div>}
       </form>
     </div>
   );

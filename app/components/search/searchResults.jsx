@@ -7,7 +7,7 @@ import PriceStatistics from "./priceStatistics";
 import Image from "next/image";
 import TotalPrice from "./totalPrice";
 import FilterDropDownMenu from "./filterDropDownMenu";
-import { useSession } from "next-auth/react"
+import { useSession } from "next-auth/react";
 
 export default function SearchResults({
   fromValue,
@@ -20,8 +20,10 @@ export default function SearchResults({
 }) {
   const [selectedDepartingFlight, setSelectedDepartingFlight] = useState(null);
   const [selectedReturningFlight, setSelectedReturningFlight] = useState(null);
-  const [filteredReturningResults, setFilteredReturningResults] = useState(null);
-  const [filteredDepartingResults, setFilteredDepartingResults] = useState(null);
+  const [filteredReturningResults, setFilteredReturningResults] =
+    useState(null);
+  const [filteredDepartingResults, setFilteredDepartingResults] =
+    useState(null);
   const [maxPrice, setMaxPrice] = useState(null);
   const [airLine, setAirline] = useState(null);
 
@@ -97,7 +99,7 @@ export default function SearchResults({
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="mx-16 my-10">
+      <div className="mx-4 md:mx-16 my-10">
         <SearchBar
           fromValue={fromValue}
           toValue={toValue}
@@ -107,7 +109,7 @@ export default function SearchResults({
           minorsValue={minorsValue}
           isRoundTripValue={isRoundTripValue}
         />
-        <div className="my-5 flex">
+        <div className="my-5 flex flex-wrap gap-2">
           <FilterDropDownMenu
             title={"Max Price"}
             onItemsChange={onMaxPriceFilter}
@@ -167,8 +169,8 @@ export default function SearchResults({
           </button>
         </div>
 
-        <div className="mt-5 flex ">
-          <div className="w-3.9/5  mr-20">
+        <div className="mt-5 flex flex-col lg:flex-row gap-8 lg:gap-20">
+          <div className="w-full lg:w-3/5">
             <p className="text-h4 text-grey-600">
               Choose a{" "}
               <span className="text-purpleBlue">

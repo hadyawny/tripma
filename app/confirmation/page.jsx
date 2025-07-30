@@ -17,14 +17,13 @@ export default function ConfirmationPage() {
     selectedSeatsReturning,
   } = useGlobalContext();
 
-    const { data: session, status } = useSession();
-    const router = useRouter();
-    useEffect(() => {
-      if (status === "unauthenticated" || !selectedDepartingFlight) {
-        router.push("/");
-      }
-    }, [status, selectedDepartingFlight]);
-  
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "unauthenticated" || !selectedDepartingFlight) {
+      router.push("/");
+    }
+  }, [status, selectedDepartingFlight]);
 
   const [departingTripLength, setDepartingTripLength] = useState("");
   const [returningTripLength, setReturningTripLength] = useState("");
@@ -90,18 +89,18 @@ export default function ConfirmationPage() {
   const taxes = totalPrice * (24 / 100);
   const subtotal = totalPrice - taxes;
 
-   if (
-      !selectedDepartingFlight ||
-      status === "loading" ||
-      status === "unauthenticated"
-    ) {
-      return <LoadingCircle />;
-    }
+  if (
+    !selectedDepartingFlight ||
+    status === "loading" ||
+    status === "unauthenticated"
+  ) {
+    return <LoadingCircle />;
+  }
 
   return (
-    <div className="flex mx-24 my-14 justify-between">
-      <div className="w-3/5 flex flex-col ">
-        <div className="bg-lightGreen text-deepGreen border p-5 border-deepGreen rounded-lg w-[44rem] ">
+    <div className="flex flex-col lg:flex-row mx-4 md:mx-8 lg:mx-24 my-14 justify-between gap-8">
+      <div className="w-full lg:w-3/5 flex flex-col">
+        <div className="bg-lightGreen text-deepGreen border p-5 border-deepGreen rounded-lg w-full max-w-2xl">
           Your flight has been booked successfully! Your confirmation number is
           #381029404387
         </div>
@@ -111,20 +110,20 @@ export default function ConfirmationPage() {
         </p>
         <p className="text-lg text-grey-400 mt-4">
           Thank you for booking your travel with Tripma! Below is a summary of
-          your trip to {selectedDepartingFlight.toCity}. We’ve sent a copy of your
-          booking confirmation to your email address. You can also find this
-          page again in <span className="text-purpleBlue">My trips</span>.
+          your trip to {selectedDepartingFlight.toCity}. We’ve sent a copy of
+          your booking confirmation to your email address. You can also find
+          this page again in <span className="text-purpleBlue">My trips</span>.
         </p>
         <p className="text-h3 text-grey-600 mt-14">Flight summary</p>
 
         {selectedDepartingFlight && (
           <div>
             <p className="text-h4 text-grey-600 mt-6">
-            Departing {formatDate(selectedDepartingFlight.departDay)}
+              Departing {formatDate(selectedDepartingFlight.departDay)}
             </p>
 
             <div
-              className={`px-4 flex mt-4  text-grey-900  border border-grey-200 rounded-lg w-[50rem]`}
+              className={`px-4 flex mt-4 text-grey-900 border border-grey-200 rounded-lg w-full max-w-3xl`}
             >
               <Image
                 src={selectedDepartingFlight.airlineLogo}
@@ -165,8 +164,8 @@ export default function ConfirmationPage() {
               </div>
             </div>
             <p className="text-grey-400 mt-3">
-              {selectedSeatsDeparting.length > 1 ? "Seats" : "Seat"} {selectedSeatsDeparting.join("-")} 
-              
+              {selectedSeatsDeparting.length > 1 ? "Seats" : "Seat"}{" "}
+              {selectedSeatsDeparting.join("-")}
             </p>
           </div>
         )}
@@ -218,7 +217,8 @@ export default function ConfirmationPage() {
               </div>
             </div>
             <p className="text-grey-400 mt-3">
-            {selectedSeatsReturning.length > 1 ? "Seats" : "Seat"} {selectedSeatsReturning.join("-")} 
+              {selectedSeatsReturning.length > 1 ? "Seats" : "Seat"}{" "}
+              {selectedSeatsReturning.join("-")}
             </p>
           </div>
         )}
@@ -359,13 +359,13 @@ export default function ConfirmationPage() {
           title={"9 Hours Shinjuku"}
         />
         <div className="flex justify-center mb-16 mt-2">
-        <NavigationButton
-          text={"Shop all hotels"}
-          borderColor={"border-purpleBlue"}
-          color={"text-purpleBlue"}
-        />
+          <NavigationButton
+            text={"Shop all hotels"}
+            borderColor={"border-purpleBlue"}
+            color={"text-purpleBlue"}
+          />
         </div>
-        
+
         <p className="text-h3 text-grey-600 mb-4">
           Find unique <span className="text-purpleBlue">experiences</span>
         </p>
@@ -387,11 +387,11 @@ export default function ConfirmationPage() {
           title={"teamLab Borderless"}
         />
         <div className="flex justify-center mb-16 mt-2">
-        <NavigationButton
-          text={"View all experiences"}
-          borderColor={"border-purpleBlue"}
-          color={"text-purpleBlue"}
-        />
+          <NavigationButton
+            text={"View all experiences"}
+            borderColor={"border-purpleBlue"}
+            color={"text-purpleBlue"}
+          />
         </div>
       </div>
     </div>
@@ -425,7 +425,6 @@ function calculateTripLength(fromTime, toTime) {
   return `${hours}h ${minutes}m`;
 }
 
-
 function formatDate(dateString) {
   const date = new Date(dateString?.split("-").reverse().join("-"));
 
@@ -446,4 +445,3 @@ function formatDate(dateString) {
 
   return `${month} ${day}${suffix}, ${year}`;
 }
-

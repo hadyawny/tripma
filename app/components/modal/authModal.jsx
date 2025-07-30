@@ -1,6 +1,9 @@
 "use client";
 
-import { nextAuthGoogleSignIn, nextAuthSignIn } from "@/app/actions/authActions";
+import {
+  nextAuthGoogleSignIn,
+  nextAuthSignIn,
+} from "@/app/actions/authActions";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -39,24 +42,24 @@ export default function AuthModal({ buttonLabel, modalType }) {
 
       const { email, password } = data;
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       if (response.ok) {
-        
-        await nextAuthSignIn(email,password);
+        await nextAuthSignIn(email, password);
 
         setErrors({});
         handleClose();
         router.refresh();
-
-      }
-      else {
+      } else {
         // Handle errors from the server response
         const errorData = await response.json();
         if (errorData.message) {
@@ -73,29 +76,30 @@ export default function AuthModal({ buttonLabel, modalType }) {
       setErrors(validationErrors);
     }
   };
-  const handleSignInSubmit = async(schema, data) => {
+  const handleSignInSubmit = async (schema, data) => {
     try {
       schema.parse(data); // Validate the data
 
-
       const { email, password } = data;
-      
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/signin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
 
-      if (response.ok){
-        await nextAuthSignIn(email,password);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/signin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      if (response.ok) {
+        await nextAuthSignIn(email, password);
 
         setErrors({});
         handleClose();
         router.refresh();
-      }
-      else {
+      } else {
         // Handle errors from the server response
         const errorData = await response.json();
         if (errorData.message) {
@@ -113,7 +117,7 @@ export default function AuthModal({ buttonLabel, modalType }) {
     }
   };
 
-  async function onGoogleSignIn(){
+  async function onGoogleSignIn() {
     await nextAuthGoogleSignIn();
   }
 
@@ -134,7 +138,7 @@ export default function AuthModal({ buttonLabel, modalType }) {
 
   function SignInModal({ onSubmit }) {
     const [formData, setFormData] = useState({ email: "", password: "" });
-    
+
     const handleChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -149,8 +153,8 @@ export default function AuthModal({ buttonLabel, modalType }) {
         </button>
 
         {isOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-trueWhite p-10 rounded-lg w-3/6">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-trueWhite p-6 md:p-10 rounded-lg w-full max-w-md md:max-w-lg lg:w-3/6">
               <div className="flex justify-between mb-4">
                 <p className="text-h3 text-grey-600 font-bold ">Sign In</p>
                 <button onClick={handleClose}>
@@ -196,14 +200,14 @@ export default function AuthModal({ buttonLabel, modalType }) {
                   )}
                 </div>
                 <div>
-                <button
-                  type="submit"
-                  className="bg-purpleBlue text-white px-4 py-2 rounded w-full"
-                >
-                  Sign In
-                </button>
+                  <button
+                    type="submit"
+                    className="bg-purpleBlue text-white px-4 py-2 rounded w-full"
+                  >
+                    Sign In
+                  </button>
 
-                {errors.server && (
+                  {errors.server && (
                     <p className="text-red text-sm mt-1">{errors.server}</p>
                   )}
                 </div>
@@ -352,16 +356,15 @@ export default function AuthModal({ buttonLabel, modalType }) {
                   Send me the latest deal alerts
                 </label>
                 <div>
-                <button
-                  type="submit"
-                  className="bg-purpleBlue text-white px-4 py-2 mt-4 rounded w-full"
-                >
-                  Sign Up
-                </button>
-                {errors.server && (
+                  <button
+                    type="submit"
+                    className="bg-purpleBlue text-white px-4 py-2 mt-4 rounded w-full"
+                  >
+                    Sign Up
+                  </button>
+                  {errors.server && (
                     <p className="text-red text-sm mt-1">{errors.server}</p>
                   )}
-
                 </div>
               </form>
               <div className="flex items-center mt-4">
